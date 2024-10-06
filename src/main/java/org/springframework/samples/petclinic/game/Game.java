@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.samples.petclinic.card.Card;
 import org.springframework.samples.petclinic.model.BaseEntity;
+import org.springframework.samples.petclinic.round.Round;
 import org.springframework.samples.petclinic.scoreboard.Scoreboard;
 
 import jakarta.persistence.Entity;
@@ -31,5 +32,6 @@ public class Game extends BaseEntity {
     @OneToMany
     private List<Card> cards;
 
-    private Integer turn;
+    @OneToMany
+    private List<Round> rounds;
 }
