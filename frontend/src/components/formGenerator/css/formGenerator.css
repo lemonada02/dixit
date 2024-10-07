@@ -1,13 +1,13 @@
-:root{
-  --color-input: #303030;
+:root {
+  --color-input: #2f324f;
   --color-label: #5e5e5e;
   --color-btn-disabled: #5757577e;
   --color-error: #cc0033;
   --color-error-background: #fce4e4;
   --color-border-disabled: #706c6c;
-  --main-button-hover-dark-color: #23c483;
-  --main-button-hover-light-color: #23c483;
-  --main-button-shadow-hover-color: rgba(0,0,0,0.4);
+  --main-button-hover-dark-color: #2f324f;
+  --main-button-hover-light-color: #2f324f;
+  --main-button-shadow-hover-color: rgba(0, 0, 0, 0.4);
   --main-black: #111;
 }
 
@@ -45,6 +45,11 @@
   height: 100%;
   width: 100%;
   padding-bottom: 20px;
+  background-color: #ffffff4d;
+  padding: 2rem;
+  border-radius: 25px;
+  backdrop-filter: blur(10px);
+  margin-bottom: 12px;
 }
 
 .class-form-group {
@@ -96,7 +101,7 @@ textarea.class-form-input {
   cursor: pointer;
 }
 
-.interval-group{
+.interval-group {
   margin-bottom: 20px;
 }
 
@@ -134,11 +139,11 @@ select.class-form-input {
 }
 
 @media screen and (max-width: 450px) {
-    .class-form-group{
-        width: 90% !important;
-        margin-top: 20px;
-    }
+  .class-form-group {
+    width: 90% !important;
+    margin-top: 20px;
   }
+}
 
 /* ERRORS */
 

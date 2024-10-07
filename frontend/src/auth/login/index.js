@@ -37,7 +37,7 @@ export default function Login() {
     return (
       <div className="auth-page-container">
         {message ? (
-          <Alert color="primary">{message}</Alert>
+          <Alert color="primary" style={{marginTop: -50}}>{message}</Alert>
         ) : (
           <></>
         )}

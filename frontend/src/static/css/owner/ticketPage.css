@@ -35,7 +35,7 @@
 }
 
 .ticket-input-div div:nth-child(1) textarea{
-    border: solid 1px var(--main-green-color)
+    border: solid 1px var(--main-color)
 }
 
 .ticket-input-div div:nth-child(2) {
@@ -43,7 +43,7 @@
 }
 
 .ticket-input-div div:nth-child(2) button{
-    background-color: var(--main-green-color);
+    background-color: var(--main-color);
     outline: none;
     border: none;
 }

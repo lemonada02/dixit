@@ -6,6 +6,7 @@ import { registerFormOwnerInputs } from "./form/registerFormOwnerInputs";
 import { registerFormVetInputs } from "./form/registerFormVetInputs";
 import { registerFormClinicOwnerInputs } from "./form/registerFormClinicOwnerInputs";
 import { useEffect, useRef, useState } from "react";
+import { registerFormPlayerInputs } from "./form/registerFormPlayer";
 
 export default function Register() {
   let [type, setType] = useState(null);
@@ -62,7 +63,7 @@ export default function Register() {
               else {
                 tokenService.setUser(data);
                 tokenService.updateLocalAccessToken(data.token);
-                window.location.href = "/dashboard";
+                window.location.href = "/";
               }
             })
             .catch((message) => {
@@ -113,7 +114,8 @@ export default function Register() {
             inputs={
               type === "Owner" ? registerFormOwnerInputs 
               : type === "Vet" ? registerFormVetInputs
-              : registerFormClinicOwnerInputs
+              : type === "Clinic Owner" ? registerFormClinicOwnerInputs
+              : registerFormPlayerInputs
             }
             onSubmit={handleSubmit}
             numberOfColumns={1}
@@ -153,6 +155,13 @@ export default function Register() {
               onClick={handleButtonClick}
             >
               Clinic Owner
+            </button>
+            <button
+              className="auth-button"
+              value="Player"
+              onClick={handleButtonClick}
+            >
+              Player
             </button>
           </div>
         </div>
