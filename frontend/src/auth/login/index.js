@@ -26,7 +26,7 @@ export default function Login() {
       .then(function (data) {
         tokenService.setUser(data);
         tokenService.updateLocalAccessToken(data.token);
-        window.location.href = "/dashboard";
+        window.location.href = "/";
       })
       .catch((error) => {         
         setMessage(error);
@@ -37,7 +37,7 @@ export default function Login() {
     return (
       <div className="auth-page-container">
         {message ? (
-          <Alert color="primary">{message}</Alert>
+          <Alert color="primary" style={{marginTop: -50}}>{message}</Alert>
         ) : (
           <></>
         )}

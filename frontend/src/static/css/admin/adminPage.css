@@ -18,7 +18,7 @@
   transition: transform 0.5s, color 0.3s;
   transform: translateY(-15px) scale(0.7);
   transform-origin: top left;
-  color: #23c483;
+  color: #2f324f;
   cursor: pointer;
 }
 
@@ -45,7 +45,7 @@
 }
 
 .custom-input:disabled{
-  background-color: rgb(239, 239, 239) !important;
+  background-color: #e0e0e0 !important;
 }
 
 .custom-textarea{
