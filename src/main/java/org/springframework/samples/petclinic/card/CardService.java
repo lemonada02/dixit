@@ -37,8 +37,8 @@ public class CardService {
             int id = i+1;
             carta.setDesign("src\\main\\resources\\static\\resources\\images_card\\card"+id+".png");
             cartas.add(carta);
+            saveCard(carta);
         }
-
         return cartas;
     }
 }

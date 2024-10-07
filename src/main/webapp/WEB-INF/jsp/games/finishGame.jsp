@@ -1,26 +1,17 @@
-<%@ page session="false" trimDirectiveWhitespaces="true" %>
-<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="petclinic" tagdir="/WEB-INF/tags" %>
+<%@ page session="false" trimDirectiveWhitespaces="true" %> <%@ taglib
+prefix="spring" uri="http://www.springframework.org/tags" %> <%@ taglib
+prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %> <%@ taglib
+prefix="c" uri="http://java.sun.com/jsp/jstl/core" %> <%@ taglib
+prefix="petclinic" tagdir="/WEB-INF/tags" %>
 
-<petclinic:layout pageName="finishGame">
+<petclinic:layout pageName="finishGameCompetitive">
+  <h1 style="text-align: center; font-size: 64px">
+    ${winner.username} won the game!
+  </h1>
 
-<h1 
-    	style ="
-    		text-align: center;
-    		font-size: 64px">
-    	Game Over
-</h1>
- <c:forEach items="${scoreboards }" var="scoreboard">
- 	<h2> Score: ${scoreboard.score }</h2>
- 	<h2> Record : ${profile.record}</h2> 
- 	<c:if test="${scoreBoard.newRecord == true}">
- 		<h3>New Record!!!!</h3>
- 	</c:if>
- 	</c:if>
- </c:forEach>
- <a class="btn btn-default" href="/">Go home</a>
-    
-
+  <h2>Ranking:</h2>
+  <c:forEach items="${scoreboards}" var="scoreboard">
+    <h2>${scoreboard.user.username} Puntuacion: ${scoreboard.score}</h2>
+  </c:forEach>
+  <a class="btn btn-default" href="/">Go home</a>
 </petclinic:layout>

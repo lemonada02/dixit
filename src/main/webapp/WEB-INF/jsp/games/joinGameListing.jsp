@@ -23,16 +23,14 @@
                     <c:out value="${game.mode} #${game.id}"/>
                 </td>
                 <td>
-                    <c:out value="${game.numberCurrentPlayers} / ${game.numberOfPlayers}"/>
+                    <c:out value="${game.numberOfPlayers} / 4"/>
                 </td>
                 <td>
                 	<c:out value="${game.scoreboards.get(0).user.username}"/>
                 </td>
-                <c:if test="${game.numberCurrentPlayers != game.numberOfPlayers}"> 
                 <td>
                     <a class="btn btn-default" href="/games/join/${game.id}/${username}">Join</a>
                 </td>
-                </c:if> 
             </tr>
         </c:forEach>
         </tbody>

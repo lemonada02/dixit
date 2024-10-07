@@ -13,7 +13,7 @@
     	You WON!!
 </h1>
  <c:forEach items="${scoreboards }" var="scoreboard">
- 	<h2> Puntuacion: ${scoreboard.score }</h2>
+ 	<h2> Puntuacion: ${scoreboard.score}</h2>
  </c:forEach>
  <a class="btn btn-default" href="/">Go home</a>
     
