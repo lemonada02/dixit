@@ -12,6 +12,8 @@ import org.springframework.samples.petclinic.clinicowner.ClinicOwner;
 import org.springframework.samples.petclinic.clinicowner.ClinicOwnerService;
 import org.springframework.samples.petclinic.owner.Owner;
 import org.springframework.samples.petclinic.owner.OwnerService;
+import org.springframework.samples.petclinic.player.Player;
+import org.springframework.samples.petclinic.player.PlayerService;
 import org.springframework.samples.petclinic.user.Authorities;
 import org.springframework.samples.petclinic.user.AuthoritiesService;
 import org.springframework.samples.petclinic.user.User;
@@ -32,9 +34,10 @@ public class AuthService {
 	private final VetService vetService;
 	private final ClinicOwnerService clinicOwnerService;
 	private final ClinicService clinicService;
+	private final PlayerService playerService;
 
 	@Autowired
-	public AuthService(PasswordEncoder encoder, AuthoritiesService authoritiesService, UserService userService,
+	public AuthService(PasswordEncoder encoder, AuthoritiesService authoritiesService, UserService userService, PlayerService playerService,
 			OwnerService ownerService, VetService vetService, ClinicOwnerService clinicOwnerService, ClinicService clinicService) {
 		this.encoder = encoder;
 		this.authoritiesService = authoritiesService;
@@ -43,6 +46,7 @@ public class AuthService {
 		this.vetService = vetService;
 		this.clinicOwnerService = clinicOwnerService;
 		this.clinicService = clinicService;
+		this.playerService = playerService;
 	}
 
 	@Transactional
@@ -81,6 +85,18 @@ public class AuthService {
 			clinicOwner.setLastName(request.getLastName());
 			clinicOwner.setUser(user);
 			clinicOwnerService.saveClinicOwner(clinicOwner);
+			break;
+		case "player":
+			role = authoritiesService.findByAuthority("PLAYER");
+			user.setAuthority(role);
+			userService.saveUser(user);
+			Player player = new Player();
+			player.setFirstName(request.getFirstName());
+			player.setLastName(request.getLastName());
+			player.setImage(request.getImage());
+			player.setPlayerUsername(request.getPlayerUsername());
+			player.setUser(user);
+			playerService.savePlayer(player);
 			break;
 		default:
 			role = authoritiesService.findByAuthority("OWNER");
