@@ -35,7 +35,7 @@ public class CardService {
         for(int i=0; i<36; i++){
             Card carta = new Card();
             int id = i+1;
-            carta.setDesign("/src/main/resources/static/images_card/card"+id+".png");
+            carta.setDesign("src\\main\\resources\\static\\resources\\images_card\\card"+id+".png");
             cartas.add(carta);
         }
 
