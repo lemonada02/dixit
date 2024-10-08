@@ -44,6 +44,7 @@ public class GameController {
     @GetMapping("/new")
     public ModelAndView newGame(ModelMap model, Principal principal) throws TooManyPlayersException {
         Game game = new Game();
+        cardService.createAllCards();
         game.setCards(cardService.findAllCards());
         game.setNumberOfPlayers(1);
         model.addAttribute(game);
@@ -55,6 +56,15 @@ public class GameController {
         gameService.playerJoinGame(principal.getName(), game);
         gameService.initGame(game.getId());
         return new ModelAndView("redirect:/games/"+game.getId()+"/view");
+    }
+
+    @Transactional
+    @GetMapping("/gameListing")
+    public ModelAndView showGameListing(ModelMap model) {
+        List<Game> games = gameService.findAll();
+        ModelAndView res = new ModelAndView(GAME_LISTING);
+        res.addObject("games", games);
+        return res;
     }
 
     @Transactional

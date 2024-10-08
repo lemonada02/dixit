@@ -28,12 +28,12 @@ export default function Home(){
                     </div> 
                 : 
                     <div style={{ display: "flex", alignItems: 'center', justifyContent:"space-between", width: 420, marginTop: 20 }}>                        
-                        <a href="/createGame" style={{borderRadius: 8, padding: 10, textDecoration: 'none',
+                        <a href="/games/new" style={{borderRadius: 8, padding: 10, textDecoration: 'none',
                         fontSize: 22, color: 'lightgray', width: 200, textAlign: 'center',
                         backgroundColor: '#2f324f', marginTop: 20}}>
                         {`Crear`}<br />{`Partida`}</a> 
 
-                        <a href="/joinGame" style={{borderRadius: 8, padding: 10, textDecoration: 'none',
+                        <a href="/games/gameListing" style={{borderRadius: 8, padding: 10, textDecoration: 'none',
                         fontSize: 22, color: 'lightgray', width: 200, textAlign: 'center',
                         backgroundColor: '#2f324f', marginTop: 20}}>
                         Unirse a Partida</a> 

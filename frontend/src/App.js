@@ -20,33 +20,19 @@ import OwnerConsultationEdit from "./owner/consultations/consultationEdit";
 import OwnerConsultationTickets from "./owner/consultations/tickets/ticketList";
 import VetConsultationList from "./vet/consultations/consultationList";
 import VetConsultationTickets from "./vet/consultations/tickets/ticketList";
-import PetEditAdmin from "./admin/pets/PetEditAdmin";
-import PetListAdmin from "./admin/pets/PetListAdmin";
 import UserListAdmin from "./admin/users/UserListAdmin";
 import UserEditAdmin from "./admin/users/UserEditAdmin";
-import OwnerListAdmin from "./admin/owners/OwnerListAdmin";
-import OwnerEditAdmin from "./admin/owners/OwnerEditAdmin";
-import SpecialtyListAdmin from "./admin/vets/SpecialtyListAdmin";
-import SpecialtyEditAdmin from "./admin/vets/SpecialtyEditAdmin";
-import VetListAdmin from "./admin/vets/VetListAdmin";
-import VetEditAdmin from "./admin/vets/VetEditAdmin";
-import VisitListAdmin from "./admin/visits/VisitListAdmin";
-import VisitEditAdmin from "./admin/visits/VisitEditAdmin";
-import ConsultationListAdmin from "./admin/consultations/ConsultationListAdmin";
-import TicketListAdmin from "./admin/consultations/TicketListAdmin";
-import ConsultationEditAdmin from "./admin/consultations/ConsultationEditAdmin";
 import SwaggerDocs from "./public/swagger";
 import ClinicsList from "./clinicOwner/clinicsList"
 import EditClinic from "./clinicOwner/clinicEdit"
 import OwnerListClinicOwner from "./clinicOwner/ownersList"
-import ClinicOwnerListAdmin from "./admin/clinicOwners/ClinicOwnerListAdmin";
-import ClinicOwnerEditAdmin from "./admin/clinicOwners/ClinicOwnerEditAdmin";
-import ClinicListAdmin from "./admin/clinics/ClinicListAdmin";
-import ClinicEditAdmin from "./admin/clinics/ClinicEditAdmin";
-import ConsultationListClinicOwner from "./clinicOwner/consultations/ConsultationListClinicOwner";
 import ConsultationEditClinicOwner from "./clinicOwner/consultations/ConsultationEditClinicOwner";
 import VetListClinicOwner from "./clinicOwner/vets/VetListClinicOwner";
 import VetEditClinicOwner from "./clinicOwner/vets/VetEditClinicOwner";
+import ConsultationListClinicOwner from "./clinicOwner/consultations/ConsultationListClinicOwner";
+
+import GameListing from "./player/game/gameListing";
+import GameDetails from "./player/game/gameDetails";
 
 function ErrorFallback({ error, resetErrorBoundary }) {
   return (
@@ -74,6 +60,7 @@ function App() {
   let userRoutes = <></>;
   let vetRoutes = <></>;
   let publicRoutes = <></>;
+  let playerRoutes = <></>;
 
   roles.forEach((role) => {
     if (role === "ADMIN") {
@@ -81,23 +68,8 @@ function App() {
         <>
           <Route path="/users" exact={true} element={<PrivateRoute><UserListAdmin /></PrivateRoute>} />
           <Route path="/users/:username" exact={true} element={<PrivateRoute><UserEditAdmin /></PrivateRoute>} />
-          <Route path="/owners" exact={true} element={<PrivateRoute><OwnerListAdmin /></PrivateRoute>} />
-          <Route path="/owners/:id" exact={true} element={<PrivateRoute><OwnerEditAdmin /></PrivateRoute>} />
-          <Route path="/clinics" exact={true} element={<PrivateRoute><ClinicListAdmin /></PrivateRoute>} />
-          <Route path="/clinics/:id" exact={true} element={<PrivateRoute><ClinicEditAdmin /></PrivateRoute>} />
-          <Route path="/clinicOwners" exact={true} element={<PrivateRoute><ClinicOwnerListAdmin /></PrivateRoute>} />
-          <Route path="/clinicOwners/:id" exact={true} element={<PrivateRoute><ClinicOwnerEditAdmin /></PrivateRoute>} />
-          <Route path="/pets" exact={true} element={<PrivateRoute><PetListAdmin /></PrivateRoute>} />
-          <Route path="/pets/:id" exact={true} element={<PrivateRoute><PetEditAdmin /></PrivateRoute>} />
-          <Route path="/pets/:petId/visits" exact={true} element={<PrivateRoute><VisitListAdmin /></PrivateRoute>} />
-          <Route path="/pets/:petId/visits/:visitId" exact={true} element={<PrivateRoute><VisitEditAdmin /></PrivateRoute>} />
-          <Route path="/vets" exact={true} element={<PrivateRoute><VetListAdmin /></PrivateRoute>} />
-          <Route path="/vets/:id" exact={true} element={<PrivateRoute><VetEditAdmin /></PrivateRoute>} />
-          <Route path="/vets/specialties" exact={true} element={<PrivateRoute><SpecialtyListAdmin /></PrivateRoute>} />
-          <Route path="/vets/specialties/:specialtyId" exact={true} element={<PrivateRoute><SpecialtyEditAdmin /></PrivateRoute>} />
-          <Route path="/consultations" exact={true} element={<PrivateRoute><ConsultationListAdmin /></PrivateRoute>} />
-          <Route path="/consultations/:consultationId" exact={true} element={<PrivateRoute><ConsultationEditAdmin /></PrivateRoute>} />
-          <Route path="/consultations/:consultationId/tickets" exact={true} element={<PrivateRoute><TicketListAdmin /></PrivateRoute>} />
+          <Route path="/games/gameListing" exact={true} element={<PrivateRoute><GameListing /></PrivateRoute>} />
+          <Route path="/games/:id" exact={true} element={<PrivateRoute><GameDetails /></PrivateRoute>} />)
         </>)
     }
     if (role === "OWNER") {
@@ -135,10 +107,18 @@ function App() {
           <Route path="/vets/:id" exact={true} element={<PrivateRoute><VetEditClinicOwner /></PrivateRoute>} />
         </>)
     }
+    if (role === "PLAYER") {
+      playerRoutes = (
+        <>
+          <Route path="/games/gameListing" exact={true} element={<PrivateRoute><GameListing /></PrivateRoute>} />
+          <Route path="/games/:id" exact={true} element={<PrivateRoute><GameDetails /></PrivateRoute>} />)
+        </>
+      )
+    }
   })
   if (!jwt) {
     publicRoutes = (
-      <>        
+      <>
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
       </>
@@ -146,7 +126,7 @@ function App() {
   } else {
     userRoutes = (
       <>
-        {/* <Route path="/dashboard" element={<PrivateRoute><Dashboard /></PrivateRoute>} /> */}        
+        {/* <Route path="/dashboard" element={<PrivateRoute><Dashboard /></PrivateRoute>} /> */}
         <Route path="/logout" element={<Logout />} />
         <Route path="/login" element={<Login />} />
       </>
@@ -166,6 +146,7 @@ function App() {
           {adminRoutes}
           {ownerRoutes}
           {vetRoutes}
+          {playerRoutes}
         </Routes>
       </ErrorBoundary>
     </div>
