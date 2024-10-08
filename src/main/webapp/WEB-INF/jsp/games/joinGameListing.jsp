@@ -20,7 +20,7 @@
         <c:forEach items="${games}" var="game">
             <tr>
                 <td>
-                    <c:out value="${game.mode} #${game.id}"/>
+                    <c:out value="Game #${game.id}"/>
                 </td>
                 <td>
                     <c:out value="${game.numberOfPlayers} / 4"/>
@@ -29,7 +29,7 @@
                 	<c:out value="${game.scoreboards.get(0).user.username}"/>
                 </td>
                 <td>
-                    <a class="btn btn-default" href="/games/join/${game.id}/${username}">Join</a>
+                    <a class="btn btn-default" href="/games/${game.id}/join/${username}">Join</a>
                 </td>
             </tr>
         </c:forEach>

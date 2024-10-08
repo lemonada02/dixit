@@ -4,7 +4,7 @@ prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %> <%@ taglib
 prefix="c" uri="http://java.sun.com/jsp/jstl/core" %> <%@ taglib
 prefix="petclinic" tagdir="/WEB-INF/tags" %>
 
-<petclinic:layout pageName="finishGameCompetitive">
+<petclinic:layout pageName="finishGame">
   <h1 style="text-align: center; font-size: 64px">
     ${winner.username} won the game!
   </h1>

@@ -8,6 +8,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.card.Card;
 import org.springframework.samples.petclinic.card.CardService;
+import org.springframework.samples.petclinic.exceptions.TooManyPlayersException;
 import org.springframework.samples.petclinic.scoreboard.Scoreboard;
 import org.springframework.samples.petclinic.scoreboard.ScoreboardService;
 import org.springframework.samples.petclinic.user.User;
@@ -70,9 +71,9 @@ public class GameService {
         scoreboardService.save(scoreboard);
     }
 
-    @Transactional
-    public void playerJoinGame(String username, Game game) {
-        if (game.getNumberOfPlayers() < 4) {
+    @Transactional(rollbackFor = TooManyPlayersException.class)
+    public void playerJoinGame(String username, Game game) throws TooManyPlayersException {
+        if (game.getNumberOfPlayers() <= 4) {
             game.setNumberOfPlayers(game.getNumberOfPlayers() + 1);
             game.setNumberOfRounds((game.getNumberOfPlayers() + 1) * 2);
             gameRepository.save(game);
@@ -85,6 +86,8 @@ public class GameService {
             scoreboard.setScore(0);
             scoreboard.setOrder(game.getNumberOfPlayers());
             scoreboardService.save(scoreboard);
+        } else {
+            throw new TooManyPlayersException();
         }
     }
 

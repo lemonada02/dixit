@@ -28,7 +28,7 @@ public class CardService {
         cardRepository.save(card);
     }
 
-    public List<Card> createAllCards(){
+    public void createAllCards(){
 
         List<Card> cartas= new ArrayList<Card>();
         
@@ -39,6 +39,5 @@ public class CardService {
             cartas.add(carta);
             saveCard(carta);
         }
-        return cartas;
     }
 }
