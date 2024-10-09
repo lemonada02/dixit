@@ -2,6 +2,7 @@ package org.springframework.samples.petclinic.card;
 
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,14 +31,25 @@ public class CardService {
 
     public void createAllCards(){
 
-        List<Card> cartas= new ArrayList<Card>();
-        
-        for(int i=0; i<36; i++){
+        List<String> nombres = Arrays.asList(
+            "https://imgur.com/V2bDYNN.png",
+            "https://imgur.com/FmyBknh.png",
+            "https://imgur.com/ikR9zsr.png",
+            "https://imgur.com/JU5HpmQ.png",
+            "https://imgur.com/PN1f1tJ.png",
+            "https://imgur.com/EPklRdO.png",
+            "https://imgur.com/TtgTxGJ.png",
+            "https://imgur.com/c1f42n4.png",
+            "https://imgur.com/Q1FmETb.png",
+            "https://imgur.com/0mavrtt.png"
+        );
+
+        for (int i = 0; i < nombres.size(); i++) {
             Card carta = new Card();
-            int id = i+1;
-            carta.setDesign("src\\main\\resources\\static\\resources\\images_card\\card"+id+".png");
-            cartas.add(carta);
+            carta.setDesign(nombres.get(i));
             saveCard(carta);
         }
+
+
     }
 }
