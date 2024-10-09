@@ -1,42 +1,39 @@
 import React from 'react';
 import '../App.css';
-import '../static/css/home/home.css'; 
+import '../static/css/home/home.css';
+import { Link } from 'react-router-dom';
 
 import { useLocalState } from '../util/useLocalStorage';
 
-export default function Home(){
+export default function Home() {
 
     const [jwt,] = useLocalState("jwt", "");
 
-    return(
+    return (
         <div className="home-page-container">
             <div className="hero-div">
                 <h1>!Bienvenido a Dixit!</h1>
-                {!jwt? <h3 className='mt-3'>Inicie sesión para jugar</h3> : <h3 className='mt-3'>!Ya estás listo para jugar!</h3>}
+                {!jwt ? <h3 className='mt-3'>Inicie sesión para jugar</h3> : <h3 className='mt-3'>!Ya estás listo para jugar!</h3>}
 
-                {!jwt ? 
-                    <div style={{ display: 'flex', justifyContent: 'space-between', width: 420 , marginTop: 15 }}>
-                        <a href="/register" style={{borderRadius: 8, padding: 10, textDecoration: 'none',
-                        fontSize: 22, color: 'lightgray', width: 200, textAlign: 'center',
-                        backgroundColor: '#2f324f', marginTop: 20}}>
-                        Registrarse</a> 
+                {!jwt ?
+                    <div style={{ display: 'flex', justifyContent: 'space-between', width: 420, marginTop: 15 }}>
+                        <Link className="auth-button" to="/register" style={{ textDecoration: "none" }}>
+                            Registrarse
+                        </Link>
 
-                        <a href="/login" style={{borderRadius: 8, padding: 10, textDecoration: 'none',
-                        fontSize: 22, color: 'lightgray', width: 200, textAlign: 'center',
-                        backgroundColor: '#2f324f', marginTop: 20}}>
-                        Iniciar Sesión</a> 
-                    </div> 
-                : 
-                    <div style={{ display: "flex", alignItems: 'center', justifyContent:"space-between", width: 420, marginTop: 20 }}>                        
-                        <a href="/games/new" style={{borderRadius: 8, padding: 10, textDecoration: 'none',
-                        fontSize: 22, color: 'lightgray', width: 200, textAlign: 'center',
-                        backgroundColor: '#2f324f', marginTop: 20}}>
-                        {`Crear`}<br />{`Partida`}</a> 
+                        <Link className="auth-button" to="/login" style={{ textDecoration: "none" }}>
+                            Iniciar Sesión
+                        </Link>
+                    </div>
+                    :
+                    <div style={{ display: "flex", alignItems: 'center', justifyContent: "space-around", width: 420, marginTop: 20, textAlign:'center' }}>
+                        <Link className="auth-button" to="/games/new" style={{ textDecoration: "none" }}>
+                            {`Crear`}<br />{`Partida`}
+                        </Link>
 
-                        <a href="/games/gameListing" style={{borderRadius: 8, padding: 10, textDecoration: 'none',
-                        fontSize: 22, color: 'lightgray', width: 200, textAlign: 'center',
-                        backgroundColor: '#2f324f', marginTop: 20}}>
-                        Unirse a Partida</a> 
+                        <Link className="auth-button" to="/games/gameListing" style={{ textDecoration: "none" }}>
+                            {`Unirse a`}<br />{`Partida`}
+                        </Link>
                     </div>
                 }
 

@@ -13,12 +13,15 @@ import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
-@Controller
-@RequestMapping("/games")
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+
+@RestController
+@RequestMapping("/api/v1/games")
+@SecurityRequirement(name = "bearerAuth")
 public class GameController {
 
     private final String GAME_LISTING = "games/joinGameListing";
@@ -40,56 +43,28 @@ public class GameController {
         this.cardService = cardService;
     }
 
-    @Transactional
-    @GetMapping("/new")
-    public ModelAndView newGame(ModelMap model, Principal principal) throws TooManyPlayersException {
-        Game game = new Game();
-        cardService.createAllCards();
-        game.setCards(cardService.findAllCards());
-        game.setNumberOfPlayers(1);
-        model.addAttribute(game);
-        gameService.save(game);
-
-        gameService.playerCreateGame(principal.getName(), game);
-        gameService.save(game);
-        
-        gameService.playerJoinGame(principal.getName(), game);
-        gameService.initGame(game.getId());
-        return new ModelAndView("redirect:/games/"+game.getId()+"/view");
-    }
-
+    //funciona
     @Transactional
     @GetMapping("/gameListing")
-    public ModelAndView showGameListing(ModelMap model) {
-        List<Game> games = gameService.findAll();
-        ModelAndView res = new ModelAndView(GAME_LISTING);
-        res.addObject("games", games);
-        return res;
+    public List<Game> showGameListing() {
+        return gameService.findAll();
     }
 
+    //por revisar
     @Transactional
-    @GetMapping("/{gameId}/view")
-    public ModelAndView showDetails(ModelMap model, @PathVariable("gameId") int gameId) {
-
-        Game game = gameService.findById(gameId);
-        List<Scoreboard> scoreboards = scoreboardService.findByGameId(gameId);
-
+    @GetMapping("/new")
+    public ModelAndView newGame() {
         ModelAndView res = new ModelAndView(GAME_DETAILS);
-        res.addObject("game", game);
-        res.addObject("scoreboards", scoreboards);
-        return res;
-    }
-
-    @Transactional
-    @GetMapping("/{gameId}/join/{username}")
-    public ModelAndView joinGame(@PathVariable("gameId") int gameId, @PathVariable("username") String username) {
-        Game game = gameService.findById(gameId);
-        try{
-            gameService.playerJoinGame(username, game);
-        } catch (TooManyPlayersException e) {
-            return new ModelAndView("redirect:/games");
-        }
-
-        return new ModelAndView("redirect:/games/"+gameId+"/view");
+        Game game = new Game();
+        Scoreboard scoreboard = new Scoreboard();
+        scoreboard.setUser(userService.findCurrentUser());
+        scoreboard.setOrder(1);
+        scoreboard.setScore(0);
+        scoreboard.setGame(game);
+        scoreboardService.save(scoreboard);
+        game.setNumberOfPlayers(1);
+        game.setScoreboards(List.of(scoreboard));
+        gameService.save(game);
+        return new ModelAndView("redirect:/api/v1/games/gameListing");
     }
 }

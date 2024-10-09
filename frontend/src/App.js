@@ -33,6 +33,7 @@ import ConsultationListClinicOwner from "./clinicOwner/consultations/Consultatio
 
 import GameListing from "./player/game/gameListing";
 import GameDetails from "./player/game/gameDetails";
+import CardListing from "./player/card/CardListing";
 
 function ErrorFallback({ error, resetErrorBoundary }) {
   return (
@@ -68,6 +69,7 @@ function App() {
         <>
           <Route path="/users" exact={true} element={<PrivateRoute><UserListAdmin /></PrivateRoute>} />
           <Route path="/users/:username" exact={true} element={<PrivateRoute><UserEditAdmin /></PrivateRoute>} />
+          <Route path="/cards" exact={true} element={<PrivateRoute><CardListing /></PrivateRoute>} />
           <Route path="/games/gameListing" exact={true} element={<PrivateRoute><GameListing /></PrivateRoute>} />
           <Route path="/games/:id" exact={true} element={<PrivateRoute><GameDetails /></PrivateRoute>} />)
         </>)
@@ -110,6 +112,7 @@ function App() {
     if (role === "PLAYER") {
       playerRoutes = (
         <>
+          <Route path="/cards" exact={true} element={<PrivateRoute><CardListing /></PrivateRoute>} />
           <Route path="/games/gameListing" exact={true} element={<PrivateRoute><GameListing /></PrivateRoute>} />
           <Route path="/games/:id" exact={true} element={<PrivateRoute><GameDetails /></PrivateRoute>} />)
         </>
