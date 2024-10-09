@@ -50,10 +50,6 @@ public class Consultation extends BaseEntity {
 	@JoinColumn(name = "pet_id")	
 	private Pet pet;
 
-//	@OneToOne
-//	@JoinColumn(name = "vet_id", nullable = false)
-//	private Vet vet;
-
 	@Column(name = "creation_date")
 	@CreationTimestamp
 	private LocalDateTime creationDate;

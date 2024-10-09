@@ -55,7 +55,6 @@ class VisitList extends Component {
                 <tr key={visit.id}>
                     <td>{(new Date(visit.datetime)).toLocaleString()}</td>
                     <td>{visit.description ? visit.description : "No description provided"}</td>
-                    <td>{visit.vet.firstName} {visit.vet.lastName}</td>
                     <td>
                         <ButtonGroup>
                             <Button size="sm" color="primary" tag={Link}
@@ -87,7 +86,6 @@ class VisitList extends Component {
                             <tr>
                                 <th>Date and Time</th>
                                 <th>Description</th>
-                                <th>Vet</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>

@@ -35,9 +35,6 @@ export default function PlanList() {
                     <BsDot color="white" /> Low support priority
                   </li>
                   <li>
-                    <FaTimes color="red" /> Vet Selection for Visits
-                  </li>
-                  <li>
                     <FaTimes color="red" /> Calendar with Upcoming Visits
                   </li>
                   <li>
@@ -74,9 +71,6 @@ export default function PlanList() {
                     <BsDot color="white" /> Medium support priority
                   </li>
                   <li>
-                    <FaCheck color="green" /> Vet Selection for Visits
-                  </li>
-                  <li>
                     <FaCheck color="green" /> Calendar with Upcoming Visits
                   </li>
                   <li>
@@ -111,9 +105,6 @@ export default function PlanList() {
                   </li>
                   <li>
                     <BsDot color="white" /> High support priority
-                  </li>
-                  <li>
-                    <FaCheck color="green" /> Vet Selection for Visits
                   </li>
                   <li>
                     <FaCheck color="green" /> Calendar with Upcoming Visits

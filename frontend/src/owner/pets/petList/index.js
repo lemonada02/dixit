@@ -162,10 +162,6 @@ export default function OwnerPetList() {
                                 "DD/MM/YYYY HH:mm"
                               )}
                             </span>
-                            <span>
-                              <strong>Vet:</strong> {visit.vet.firstName}{" "}
-                              {visit.vet.lastName}
-                            </span>
                             <div className="options-row">
                               {new Date(visit.datetime) > Date.now() && (
                                 <button

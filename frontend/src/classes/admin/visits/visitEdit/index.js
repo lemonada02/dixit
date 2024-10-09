@@ -8,7 +8,6 @@ class VisitEdit extends Component {
         id: '',
         datetime: '',
         description: '',
-        vet: {},
         pet: {},
     };
 
@@ -17,12 +16,10 @@ class VisitEdit extends Component {
         this.state = {
             visit: this.emptyVisit,
             pet: {},
-            vets: [],
             message: null,
             modalShow: false,
         };
         this.handleChange = this.handleChange.bind(this);
-        this.handleVetChange = this.handleVetChange.bind(this);
         this.handleShow = this.handleShow.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.jwt = JSON.parse(window.localStorage.getItem("jwt"));
@@ -42,15 +39,6 @@ class VisitEdit extends Component {
         else this.setState({ pet: pet });
 
         if (!this.state.message) {
-            const vets = await (await fetch(`/api/v1/vets/`, {
-                headers: {
-                    "Authorization": `Bearer ${this.jwt}`,
-                },
-            })).json();
-            this.setState({ vets: vets });
-            if (vets.message) this.setState({ message: vets.message, modalShow: true });
-            else this.setState({ vets: vets });
-
             if (this.visitId !== 'new' && !this.state.message) {
                 const visit = await (await fetch(`/api/v1/pets/${this.petId}/visits/${this.visitId}`, {
                     headers: {
@@ -69,17 +57,6 @@ class VisitEdit extends Component {
         const name = target.name;
         let visit = { ...this.state.visit };
         visit[name] = value;
-        this.setState({ visit });
-    }
-
-    handleVetChange(event) {
-        const target = event.target;
-        const value = Number(target.value);
-        const vets = [...this.state.vets]
-        let selectedVet = null;
-        selectedVet = vets.filter((vet) => vet.id === value)[0];
-        let visit = { ...this.state.visit };
-        visit["vet"] = selectedVet;
         this.setState({ visit });
     }
 
@@ -109,10 +86,8 @@ class VisitEdit extends Component {
     }
 
     render() {
-        const { visit, pet, vets } = this.state;
+        const { visit, pet} = this.state;
         const title = <h2>{visit.id ? 'Edit Visit' : 'Add Visit'}</h2>;
-
-        const vetOptions = vets.map(vet => <option key={vet.id} value={vet.id}>{vet.firstName} {vet.lastName}</option>);
 
         let modal = <></>;
         if (this.state.message) {
@@ -150,14 +125,6 @@ class VisitEdit extends Component {
                         <Label for="description">Description</Label>
                         <Input type="text" name="description" id="description" value={visit.description || ''}
                             onChange={this.handleChange} autoComplete="description" />
-                    </FormGroup>
-                    <FormGroup>
-                        <Label for="vet">Vet</Label>
-                        <Input type="select" required name="vet" id="vet" value={visit.vet.id}
-                            onChange={this.handleVetChange} autoComplete="vet">
-                            <option value="">None</option>
-                            {vetOptions}
-                        </Input>
                     </FormGroup>
                     <FormGroup>
                         <Label for="pet">Pet</Label>

@@ -16,7 +16,6 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.samples.petclinic.exceptions.ResourceNotFoundException;
 import org.springframework.samples.petclinic.owner.Owner;
 import org.springframework.samples.petclinic.owner.OwnerService;
-import org.springframework.samples.petclinic.vet.VetService;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,9 +29,6 @@ class UserServiceTests {
 
 	@Autowired
 	private AuthoritiesService authService;
-
-	@Autowired
-	private VetService vetService;
 
 	@Autowired
 	private OwnerService ownerService;
@@ -74,9 +70,6 @@ class UserServiceTests {
 
 		List<User> admins = (List<User>) this.userService.findAllByAuthority("ADMIN");
 		assertEquals(1, admins.size());
-
-		List<User> vets = (List<User>) this.userService.findAllByAuthority("VET");
-		assertEquals(6, vets.size());
 	}
 
 	@Test
@@ -199,24 +192,6 @@ class UserServiceTests {
 //		Integer lastCount = ((Collection<User>) userService.findAll()).size();
 //		assertEquals(firstCount, lastCount);
 //	}
-
-	@Test
-	@Transactional
-	void shouldDeleteUserWithoutVet() {
-		Integer firstCount = ((Collection<User>) userService.findAll()).size();
-		User user = new User();
-		user.setUsername("Sam");
-		user.setPassword("password");
-		Authorities auth = authService.findByAuthority("VET");
-		user.setAuthority(auth);
-		this.userService.saveUser(user);
-
-		Integer secondCount = ((Collection<User>) userService.findAll()).size();
-		assertEquals(firstCount + 1, secondCount);
-		userService.deleteUser(user.getId());
-		Integer lastCount = ((Collection<User>) userService.findAll()).size();
-		assertEquals(firstCount, lastCount);
-	}
 
 //	@Test
 //	@Transactional

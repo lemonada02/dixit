@@ -18,19 +18,9 @@ import OwnerDashboard from "./owner/dashboard";
 import OwnerConsultationList from "./owner/consultations/consultationList";
 import OwnerConsultationEdit from "./owner/consultations/consultationEdit";
 import OwnerConsultationTickets from "./owner/consultations/tickets/ticketList";
-import VetConsultationList from "./vet/consultations/consultationList";
-import VetConsultationTickets from "./vet/consultations/tickets/ticketList";
 import UserListAdmin from "./admin/users/UserListAdmin";
 import UserEditAdmin from "./admin/users/UserEditAdmin";
 import SwaggerDocs from "./public/swagger";
-import ClinicsList from "./clinicOwner/clinicsList"
-import EditClinic from "./clinicOwner/clinicEdit"
-import OwnerListClinicOwner from "./clinicOwner/ownersList"
-import ConsultationEditClinicOwner from "./clinicOwner/consultations/ConsultationEditClinicOwner";
-import VetListClinicOwner from "./clinicOwner/vets/VetListClinicOwner";
-import VetEditClinicOwner from "./clinicOwner/vets/VetEditClinicOwner";
-import ConsultationListClinicOwner from "./clinicOwner/consultations/ConsultationListClinicOwner";
-
 import GameListing from "./player/game/gameListing";
 import GameDetails from "./player/game/gameDetails";
 import CardListing from "./player/card/CardListing";
@@ -59,7 +49,6 @@ function App() {
   let adminRoutes = <></>;
   let ownerRoutes = <></>;
   let userRoutes = <></>;
-  let vetRoutes = <></>;
   let publicRoutes = <></>;
   let playerRoutes = <></>;
 
@@ -85,28 +74,6 @@ function App() {
           <Route path="/consultations" exact={true} element={<PrivateRoute><OwnerConsultationList /></PrivateRoute>} />
           <Route path="/consultations/:consultationId" exact={true} element={<PrivateRoute><OwnerConsultationEdit /></PrivateRoute>} />
           <Route path="/consultations/:consultationId/tickets" exact={true} element={<PrivateRoute><OwnerConsultationTickets /></PrivateRoute>} />
-        </>)
-    }
-    if (role === "VET") {
-      vetRoutes = (
-        <>
-          {/* <Route path="/dashboard" element={<PrivateRoute><OwnerDashboard /></PrivateRoute>} /> */}
-          <Route path="/myPets" exact={true} element={<PrivateRoute><OwnerPetList /></PrivateRoute>} />
-          <Route path="/consultations" exact={true} element={<PrivateRoute><VetConsultationList /></PrivateRoute>} />
-          <Route path="/consultations/:consultationId/tickets" exact={true} element={<PrivateRoute><VetConsultationTickets /></PrivateRoute>} />
-        </>)
-    }
-    if (role === "CLINIC_OWNER") {
-      vetRoutes = (
-        <>
-          <Route path="/owners" exact={true} element={<PrivateRoute><OwnerListClinicOwner /></PrivateRoute>} />
-          <Route path="/clinics" exact={true} element={<PrivateRoute><ClinicsList /></PrivateRoute>} />
-          <Route path="/clinics/:id" exact={true} element={<PrivateRoute><EditClinic /></PrivateRoute>} />
-          <Route path="/consultations" exact={true} element={<PrivateRoute><ConsultationListClinicOwner /></PrivateRoute>} />
-          <Route path="/consultations/:id" exact={true} element={<PrivateRoute><ConsultationEditClinicOwner /></PrivateRoute>} />
-          <Route path="/consultations/:id/tickets" exact={true} element={<PrivateRoute><VetConsultationTickets /></PrivateRoute>} />
-          <Route path="/vets" exact={true} element={<PrivateRoute><VetListClinicOwner /></PrivateRoute>} />
-          <Route path="/vets/:id" exact={true} element={<PrivateRoute><VetEditClinicOwner /></PrivateRoute>} />
         </>)
     }
     if (role === "PLAYER") {
@@ -148,7 +115,6 @@ function App() {
           {userRoutes}
           {adminRoutes}
           {ownerRoutes}
-          {vetRoutes}
           {playerRoutes}
         </Routes>
       </ErrorBoundary>

@@ -22,7 +22,6 @@ import org.springframework.samples.petclinic.owner.OwnerService;
 import org.springframework.samples.petclinic.pet.PetService;
 import org.springframework.samples.petclinic.pet.exceptions.DuplicatedPetNameException;
 import org.springframework.samples.petclinic.util.EntityUtils;
-import org.springframework.samples.petclinic.vet.VetService;
 
 //@DataJpaTest(includeFilters = @ComponentScan.Filter(Service.class))
 @SpringBootTest
@@ -37,9 +36,6 @@ public class VisitServiceTests {
 
 	@Autowired
 	protected VisitService visitService;
-
-	@Autowired
-	protected VetService vetService;
 
 	@Test
 	void shouldFindAllVisits() {
@@ -101,7 +97,6 @@ public class VisitServiceTests {
 		visit.setDatetime(LocalDateTime.now());
 		visit.setDescription("prueba");
 		visit.setPet(this.petService.findPetById(1));
-		visit.setVet(this.vetService.findVetById(1));
 
 		this.visitService.saveVisit(visit);
 		assertThat(visit.getId().longValue()).isNotEqualTo(0);
@@ -119,7 +114,6 @@ public class VisitServiceTests {
 		visit.setDatetime(LocalDateTime.now());
 		visit.setDescription("prueba");
 		visit.setPet(this.petService.findPetById(1));
-		visit.setVet(this.vetService.findVetById(1));
 		this.visitService.saveVisit(visit);
 
 		Integer secondCount = ((Collection<Visit>) this.visitService.findAll()).size();
@@ -189,7 +183,6 @@ public class VisitServiceTests {
 		visit.setDatetime(LocalDateTime.now());
 		visit.setDescription("prueba");
 		visit.setPet(this.petService.findPetById(pet));
-		visit.setVet(this.vetService.findVetById(1));
 		return visit;
 	}
 

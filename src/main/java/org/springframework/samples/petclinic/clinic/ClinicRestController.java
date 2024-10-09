@@ -12,7 +12,6 @@ import org.springframework.samples.petclinic.clinicowner.ClinicOwnerService;
 import org.springframework.samples.petclinic.owner.Owner;
 import org.springframework.samples.petclinic.user.UserService;
 import org.springframework.samples.petclinic.util.RestPreconditions;
-import org.springframework.samples.petclinic.vet.Vet;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -62,11 +61,6 @@ public class ClinicRestController {
 	@GetMapping(value = "owners")
 	public ResponseEntity<List<Owner>> findOwnersOfUserClinics(@RequestParam int userId) {
 		return new ResponseEntity<>(clinicService.findOwnersOfUserClinics(userId), HttpStatus.OK);
-	}
-
-	@GetMapping(value = "vets")
-	public ResponseEntity<List<Vet>> findVetsOfUserClinics(@RequestParam int userId) {
-		return new ResponseEntity<>(clinicService.findVetsOfUserClinics(userId), HttpStatus.OK);
 	}
 
 	@PostMapping

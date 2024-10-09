@@ -24,8 +24,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.samples.petclinic.exceptions.ResourceNotFoundException;
 import org.springframework.samples.petclinic.owner.Owner;
-import org.springframework.samples.petclinic.vet.Vet;
-import org.springframework.samples.petclinic.vet.VetService;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -38,13 +36,11 @@ public class UserService {
 
 //	private OwnerService ownerService;
 //
-	private VetService vetService;
 
 	@Autowired
-	public UserService(UserRepository userRepository, VetService vetService) {
+	public UserService(UserRepository userRepository) {
 		this.userRepository = userRepository;
 //		this.ownerService = ownerService;
-		this.vetService = vetService;
 	}
 
 	@Transactional
@@ -68,12 +64,6 @@ public class UserService {
 	public Owner findOwnerByUser(String username) {
 		return userRepository.findOwnerByUser(username)
 				.orElseThrow(() -> new ResourceNotFoundException("Owner", "username", username));
-	}
-
-	@Transactional(readOnly = true)
-	public Vet findVetByUser(int userId) {
-		return userRepository.findVetByUser(userId)
-				.orElseThrow(() -> new ResourceNotFoundException("Vet", "id", userId));
 	}
 
 	@Transactional(readOnly = true)
@@ -129,12 +119,6 @@ public class UserService {
 //			if (owner.isPresent())
 //				ownerService.deleteOwner(owner.get().getId());
 			this.userRepository.deleteOwnerRelation(id);
-			break;
-		case "VET":
-			Optional<Vet> vet = vetService.optFindVetByUser(id);
-			if (vet.isPresent()) {
-				vetService.deleteVet(vet.get().getId());
-			}
 			break;
 		default:
 			// The only relations that have user are Owner and Vet

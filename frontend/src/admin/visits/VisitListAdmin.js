@@ -31,9 +31,6 @@ export default function VisitListAdmin() {
           {visit.description ? visit.description : "No description provided"}
         </td>
         <td>
-          {visit.vet.firstName} {visit.vet.lastName}
-        </td>
-        <td>
           <ButtonGroup>
             <Button
               size="sm"
@@ -86,7 +83,6 @@ export default function VisitListAdmin() {
             <tr>
               <th>Date and Time</th>
               <th>Description</th>
-              <th>Vet</th>
               <th>Actions</th>
             </tr>
           </thead>

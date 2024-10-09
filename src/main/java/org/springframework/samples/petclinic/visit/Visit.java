@@ -28,7 +28,6 @@ import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.samples.petclinic.model.BaseEntity;
 import org.springframework.samples.petclinic.pet.Pet;
-import org.springframework.samples.petclinic.vet.Vet;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -52,10 +51,4 @@ public class Visit extends BaseEntity {
 	@JoinColumn(name = "pet_id")
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	private Pet pet;
-
-	@ManyToOne(optional = false)
-	@JoinColumn(name = "vet_id")
-	@OnDelete(action = OnDeleteAction.CASCADE)
-	private Vet vet;
-
 }

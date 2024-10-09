@@ -20,15 +20,10 @@ export default function OwnerVisitEdit() {
     datetime: "",
     description: "",
     pet: {},
-    vet: {
-      id: null,
-      city: "",
-    },
   });
 
   let [pet, setPet] = useState({ owner: { plan: "BASIC" } });
   let [city, setCity] = useState(null);
-  let [vets, setVets] = useState([]);
   let [message, setMessage] = useState(null);
   let [modalShow, setModalShow] = useState(false);
   let [cities, setCities] = useState([]);
@@ -45,88 +40,16 @@ export default function OwnerVisitEdit() {
     const value = target.value;
     const name = target.name;
     let visitAux = { ...visit };
-    if (name === "vet") {
-      visitAux[name].id = value;
-    } else visitAux[name] = value;
+    visitAux[name] = value;
     setVisit(visitAux);
   }
 
   function handleCityChange({ value }) {
     setCity(value);
-
-    const plan = pet.owner.clinic.plan;
-    if (plan === "BASIC") {
-      vets = vets.filter((vet) => vet.city === value);
-      let randomIndex = Math.floor(Math.random() * vets.length);
-      visit.vet = vets[randomIndex];
-    }
   }
 
   function handleShow() {
     setModalShow(!modalShow);
-  }
-
-  function getVetSelectionInput(visit, datetime, vets, city, plan) {
-    if (visit.id && datetime < Date.now()) {
-      return (
-        <Input
-          type="text"
-          disabled
-          name="vet"
-          id="vet"
-          value={
-            visit.vet.id ? visit.vet.firstName + " " + visit.vet.lastName : ""
-          }
-          onChange={handleChange}
-        />
-      );
-    } else {
-      if (plan !== "BASIC") {
-        const vetsAux = vets.filter((vet) => vet.city === city);
-        const vetsOptions = getVetOptions(vetsAux);
-        return (
-          <Input
-            type="select"
-            required
-            name="vet"
-            id="vet"
-            value={visit.vet.id ? visit.vet.id : ""}
-            onChange={handleChange}
-          >
-            <option value="">None</option>
-            {vetsOptions}
-          </Input>
-        );
-      } else {
-        return (
-          <Input
-            type="text"
-            readOnly
-            name="vet"
-            id="vet"
-            value={
-              visit.vet.id ? visit.vet.firstName + " " + visit.vet.lastName : ""
-            }
-            onChange={handleChange}
-          />
-        );
-      }
-    }
-  }
-
-  function getVetOptions(vets) {
-    return vets.map((vet) => {
-      let spAux = vet.specialties
-        .map((s) => s.name)
-        .toString()
-        .replace(",", ", ");
-      return (
-        <option key={vet.id} value={vet.id}>
-          {vet.firstName} {vet.lastName + " "}
-          {spAux !== "" ? "- " + spAux : ""}
-        </option>
-      );
-    });
   }
 
   async function handleSubmit({ values }) {
@@ -177,18 +100,6 @@ export default function OwnerVisitEdit() {
     } else setPet(petResponse);
 
     if (!message) {
-      const vetsResponse = await (
-        await fetch(`/api/v1/vets`, {
-          headers: {
-            Authorization: `Bearer ${jwt}`,
-          },
-        })
-      ).json();
-      if (vetsResponse.message) {
-        setMessage(vetsResponse.message);
-        setModalShow(true);
-      } else setVets(vetsResponse);
-
       if (visitId !== "new" && !message) {
         const visitResponse = await (
           await fetch(`/api/v1/pets/${petId}/visits/${visitId}`, {
@@ -202,7 +113,6 @@ export default function OwnerVisitEdit() {
           setModalShow(true);
         } else {
           setVisit(visitResponse);
-          setCity(visitResponse.vet.city);
         }
       }
     }
@@ -220,9 +130,6 @@ export default function OwnerVisitEdit() {
     }
 
     let cities = [];
-    vets.forEach((vet) => {
-      if (!cities.includes(vet.city)) cities.push(vet.city);
-    });
 
     if (visitEditFormInputs[2].values.length === 1 && cities.length >= 1) {
       visitEditFormInputs[2].values = [
@@ -235,11 +142,10 @@ export default function OwnerVisitEdit() {
     if (visit.id !== null) {
       visitEditFormInputs[0].defaultValue = visit.datetime;
       visitEditFormInputs[1].defaultValue = visit.description;
-      visitEditFormInputs[2].defaultValue = visit.vet.city;
     }
 
     visitEditFormInputs[2].onChange = handleCityChange;
-  }, [visit, city, vets, cities]);
+  }, [visit, city, cities]);
 
   return (
     <div className="auth-page-container">
@@ -254,13 +160,6 @@ export default function OwnerVisitEdit() {
             buttonClassName="auth-button"
             childrenPosition={-1}
           >
-            {getVetSelectionInput(
-              visit,
-              new Date(visit.datetime),
-              vets,
-              city,
-              pet.owner.clinic.plan
-            )}
           </FormGenerator>
         )}
       </div>

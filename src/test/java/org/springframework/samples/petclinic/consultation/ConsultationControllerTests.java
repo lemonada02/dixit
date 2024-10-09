@@ -40,7 +40,6 @@ import org.springframework.samples.petclinic.pet.PetType;
 import org.springframework.samples.petclinic.user.Authorities;
 import org.springframework.samples.petclinic.user.User;
 import org.springframework.samples.petclinic.user.UserService;
-import org.springframework.samples.petclinic.vet.Vet;
 import org.springframework.security.config.annotation.web.WebSecurityConfigurer;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -85,7 +84,6 @@ class ConsultationControllerTests {
 	private MockMvc mockMvc;
 
 	private Owner george;
-	private Vet vet;
 	private Pet simba;
 	private User user;
 	private User logged;
@@ -150,12 +148,6 @@ class ConsultationControllerTests {
 		simba.setOwner(george);
 		simba.setType(lion);
 		simba.setBirthDate(LocalDate.of(2000, 01, 01));
-
-		vet = new Vet();
-		vet.setId(1);
-		vet.setFirstName("Super");
-		vet.setLastName("Vet");
-		vet.setClinic(clinic);
 
 		consultation = new Consultation();
 		consultation.setId(TEST_CONSULTATION_ID);
@@ -655,22 +647,6 @@ class ConsultationControllerTests {
 	}
 
 	@Test
-	@WithMockUser(username = "vet", authorities = "VET")
-	void vetShouldUpdateTicket() throws Exception {
-		logged.setId(TEST_USER_ID);
-		ticket.setDescription("UPDATED");
-
-		when(this.consultationService.findConsultationById(TEST_CONSULTATION_ID)).thenReturn(consultation);
-		when(this.consultationService.findTicketById(TEST_TICKET_ID)).thenReturn(ticket);
-		when(this.consultationService.updateTicket(any(Ticket.class), any(Integer.class))).thenReturn(ticket);
-
-		mockMvc.perform(put(TICKET_URL + "/{id}", TEST_TICKET_ID).with(csrf()).contentType(MediaType.APPLICATION_JSON)
-				.content(objectMapper.writeValueAsString(ticket))).andExpect(status().isOk())
-				.andExpect(jsonPath("$.description").value(ticket.getDescription()))
-				.andExpect(jsonPath("$.user.username").value(user.getUsername()));
-	}
-
-	@Test
 	@WithMockUser(username = "owner", authorities = "OWNER")
 	void ownerShouldUpdateTicket() throws Exception {
 		logged.setId(TEST_USER_ID);
@@ -708,21 +684,6 @@ class ConsultationControllerTests {
 		when(this.consultationService.findTicketById(TEST_TICKET_ID)).thenReturn(ticket);
 		
 		doNothing().when(this.consultationService).deleteAdminTicket(ticket, consultation);
-
-		mockMvc.perform(delete(TICKET_URL + "/{id}", TEST_TICKET_ID).with(csrf())).andExpect(status().isOk())
-				.andExpect(jsonPath("$.message").value("Ticket deleted!"));
-	}
-
-	@Test
-	@WithMockUser(username = "vet", authorities = "VET")
-	void vetShouldDeleteTicket() throws Exception {
-		logged.setId(TEST_USER_ID);
-
-		when(this.consultationService.findConsultationById(TEST_CONSULTATION_ID)).thenReturn(consultation);
-		when(this.consultationService.findTicketById(TEST_TICKET_ID)).thenReturn(ticket);
-		when(this.userService.findOwnerByUser(TEST_USER_ID)).thenReturn(george);
-
-		doNothing().when(this.consultationService).deleteOwnerTicket(ticket, george);
 
 		mockMvc.perform(delete(TICKET_URL + "/{id}", TEST_TICKET_ID).with(csrf())).andExpect(status().isOk())
 				.andExpect(jsonPath("$.message").value("Ticket deleted!"));
@@ -788,14 +749,4 @@ class ConsultationControllerTests {
 
 		mockMvc.perform(get(BASE_URL + "/stats")).andExpect(status().isOk());
 	}
-
-	@Test
-	@WithMockUser(username = "vet", authorities = "VET")
-	void shouldNotReturnVetStats() throws Exception {
-		logged.setId(TEST_USER_ID);
-
-		mockMvc.perform(get(BASE_URL + "/stats")).andExpect(status().isForbidden())
-				.andExpect(result -> assertTrue(result.getResolvedException() instanceof AccessDeniedException));
-	}
-
 }

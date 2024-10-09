@@ -15,7 +15,6 @@ export default function VisitEditAdmin() {
     id: "",
     datetime: "",
     description: "",
-    vet: {},
     pet: {},
   };
   const petId = getIdFromUrl(2);
@@ -32,16 +31,12 @@ export default function VisitEditAdmin() {
     visitId
   );
   const pet = useFetchData(`/api/v1/pets/${petId}`, jwt);
-  const vets = useFetchData(`/api/v1/vets`, jwt);
 
   function handleChange(event) {
     const target = event.target;
     const value = target.value;
     const name = target.name;
-    if (name === "vet") {
-      const vet = vets.find((v) => v.id === Number(value));
-      setVisit({ ...visit, vet: vet });
-    } else setVisit({ ...visit, [name]: value });
+    setVisit({ ...visit, [name]: value });
   }
 
   function handleSubmit(event) {
@@ -68,11 +63,6 @@ export default function VisitEditAdmin() {
   }
 
   const modal = getErrorModal(setVisible, visible, message);
-  const vetOptions = vets.map((vet) => (
-    <option key={vet.id} value={vet.id}>
-      {vet.firstName} {vet.lastName}
-    </option>
-  ));
 
   return (
       <div className="auth-page-container">
@@ -106,23 +96,6 @@ export default function VisitEditAdmin() {
                 onChange={handleChange}
                 className="custom-textarea"
               />
-            </div>
-            <div className="custom-form-input">
-              <Label for="vet" className="custom-form-input-label">
-                Vet
-              </Label>
-              <Input
-                type="select"
-                required
-                name="vet"
-                id="vet"
-                value={visit.vet.id}
-                onChange={handleChange}
-                className="custom-input"
-              >
-                <option value="">None</option>
-                {vetOptions}
-              </Input>
             </div>
             <div className="custom-form-input">
               <Label for="pet" className="custom-form-input-label">

@@ -18,8 +18,6 @@ import org.springframework.samples.petclinic.owner.OwnerService;
 import org.springframework.samples.petclinic.user.AuthoritiesService;
 import org.springframework.samples.petclinic.user.User;
 import org.springframework.samples.petclinic.user.UserService;
-import org.springframework.samples.petclinic.vet.Vet;
-import org.springframework.samples.petclinic.vet.VetService;
 import org.springframework.transaction.annotation.Transactional;
 
 @SpringBootTest
@@ -29,8 +27,6 @@ public class AuthServiceTests {
 	protected AuthService authService;
 	@Autowired
 	protected UserService userService;
-	@Autowired
-	protected VetService vetService;
 	@Autowired
 	protected OwnerService ownerService;
 	@Autowired
@@ -48,19 +44,6 @@ public class AuthServiceTests {
 		this.authService.createUser(request);
 		int userLastCount = ((Collection<User>) this.userService.findAll()).size();
 		assertEquals(userFirstCount + 1, userLastCount);
-	}
-	
-	@Test
-	@Transactional
-	public void shouldCreateVetUser() {
-		SignupRequest request = createRequest("VET", "vettest");
-		int userFirstCount = ((Collection<User>) this.userService.findAll()).size();
-		int vetFirstCount = ((Collection<Vet>) this.vetService.findAll()).size();
-		this.authService.createUser(request);
-		int userLastCount = ((Collection<User>) this.userService.findAll()).size();
-		int vetLastCount = ((Collection<Vet>) this.vetService.findAll()).size();
-		assertEquals(userFirstCount + 1, userLastCount);
-		assertEquals(vetFirstCount + 1, vetLastCount);
 	}
 	
 	@Test
@@ -87,7 +70,7 @@ public class AuthServiceTests {
 		request.setTelephone("123123123");
 		request.setUsername(username);
 
-		if(auth == "OWNER" || auth == "VET") {
+		if(auth == "OWNER") {
 			User clinicOwnerUser = new User();
 			clinicOwnerUser.setUsername("clinicOwnerTest");
 			clinicOwnerUser.setPassword("clinicOwnerTest");

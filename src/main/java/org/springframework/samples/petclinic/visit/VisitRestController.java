@@ -60,7 +60,6 @@ public class VisitRestController {
 	private final VisitService visitService;
 	private final UserService userService;
 	private final OwnerService ownerService;
-	private static final String VET_AUTH = "VET";
 	private static final String ADMIN_AUTH = "ADMIN";
 	private static final String OWNER_AUTH = "OWNER";
 	private static final String VISIT_CLASSNAME = "Visit";
@@ -83,7 +82,7 @@ public class VisitRestController {
 	public ResponseEntity<List<Visit>> findAll(@PathVariable("petId") int petId) {
 		Pet pet = RestPreconditions.checkNotNull(petService.findPetById(petId), "Pet", "ID", petId);
 		User user = userService.findCurrentUser();
-		if (user.hasAnyAuthority(ADMIN_AUTH, VET_AUTH).equals(true)) {
+		if (user.hasAnyAuthority(ADMIN_AUTH).equals(true)) {
 			List<Visit> res = (List<Visit>) visitService.findVisitsByPetId(petId);
 			return new ResponseEntity<>(res, HttpStatus.OK);
 		} else {
@@ -143,7 +142,7 @@ public class VisitRestController {
 		RestPreconditions.checkNotNull(visitService.findVisitById(visitId), VISIT_CLASSNAME, "ID", visitId);
 		Visit visit = visitService.findVisitById(visitId);
 		User user = userService.findCurrentUser();
-		if (user.hasAnyAuthority(ADMIN_AUTH, VET_AUTH).equals(true)) {
+		if (user.hasAnyAuthority(ADMIN_AUTH).equals(true)) {
 			return new ResponseEntity<>(visit, HttpStatus.OK);
 		} else {
 			Owner owner = userService.findOwnerByUser(user.getId());
@@ -161,7 +160,7 @@ public class VisitRestController {
 		Pet pet = RestPreconditions.checkNotNull(petService.findPetById(petId), "Pet", "ID", petId);
 		RestPreconditions.checkNotNull(visitService.findVisitById(visitId), VISIT_CLASSNAME, "ID", visitId);
 		User user = userService.findCurrentUser();
-		if (user.hasAnyAuthority(ADMIN_AUTH, VET_AUTH).equals(true)) {
+		if (user.hasAnyAuthority(ADMIN_AUTH).equals(true)) {
 			visitService.deleteVisit(visitId);
 			return new ResponseEntity<>(new MessageResponse("Visit deleted!"), HttpStatus.OK);
 		} else {
@@ -184,7 +183,7 @@ public class VisitRestController {
 		User user = userService.findCurrentUser();
 		if (ownerId != null) {
 			RestPreconditions.checkNotNull(ownerService.findOwnerById(ownerId), "Owner", "ID", ownerId);
-			if (user.hasAnyAuthority(ADMIN_AUTH, VET_AUTH).equals(true)) {
+			if (user.hasAnyAuthority(ADMIN_AUTH).equals(true)) {
 				List<Visit> res = (List<Visit>) visitService.findVisitsByOwnerId(ownerId);
 				return new ResponseEntity<>(res, HttpStatus.OK);
 			} else {

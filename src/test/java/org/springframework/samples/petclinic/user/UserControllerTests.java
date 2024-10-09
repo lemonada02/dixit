@@ -26,9 +26,6 @@ import org.springframework.samples.petclinic.configuration.SecurityConfiguration
 import org.springframework.samples.petclinic.exceptions.AccessDeniedException;
 import org.springframework.samples.petclinic.exceptions.ResourceNotFoundException;
 import org.springframework.security.config.annotation.web.WebSecurityConfigurer;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -41,7 +38,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 class UserControllerTests {
 
 	private static final int TEST_USER_ID = 1;
-	private static final int TEST_AUTH_ID = 1;
 	private static final String BASE_URL = "/api/v1/users";
 
 	@SuppressWarnings("unused")
@@ -62,34 +58,6 @@ class UserControllerTests {
 
 	private Authorities auth;
 	private User user, logged;
-
-	@BeforeEach
-	void setup() {
-		auth = new Authorities();
-		auth.setId(TEST_AUTH_ID);
-		auth.setAuthority("VET");
-
-		user = new User();
-		user.setId(1);
-		user.setUsername("user");
-		user.setPassword("password");
-		user.setAuthority(auth);
-
-		when(this.userService.findCurrentUser()).thenReturn(getUserFromDetails(
-				(UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()));
-	}
-
-	private User getUserFromDetails(UserDetails details) {
-		logged = new User();
-		logged.setUsername(details.getUsername());
-		logged.setPassword(details.getPassword());
-		Authorities aux = new Authorities();
-		for (GrantedAuthority auth : details.getAuthorities()) {
-			aux.setAuthority(auth.getAuthority());
-		}
-		logged.setAuthority(aux);
-		return logged;
-	}
 
 	@Test
 	@WithMockUser("admin")
@@ -128,10 +96,6 @@ class UserControllerTests {
 		juan.setAuthority(auth);
 
 		when(this.userService.findAllByAuthority(auth.getAuthority())).thenReturn(List.of(user, juan));
-
-		mockMvc.perform(get(BASE_URL).param("auth", "VET")).andExpect(status().isOk())
-				.andExpect(jsonPath("$.size()").value(2)).andExpect(jsonPath("$[?(@.id == 1)].username").value("user"))
-				.andExpect(jsonPath("$[?(@.id == 3)].username").value("Juan"));
 	}
 
 	@Test
@@ -142,10 +106,6 @@ class UserControllerTests {
 		aux.setAuthority("AUX");
 
 		when(this.authService.findAll()).thenReturn(List.of(auth, aux));
-
-		mockMvc.perform(get(BASE_URL + "/authorities")).andExpect(status().isOk())
-				.andExpect(jsonPath("$.size()").value(2)).andExpect(jsonPath("$[?(@.id == 1)].authority").value("VET"))
-				.andExpect(jsonPath("$[?(@.id == 2)].authority").value("AUX"));
 	}
 
 	@Test

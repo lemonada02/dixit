@@ -42,7 +42,6 @@ import org.springframework.samples.petclinic.pet.PetType;
 import org.springframework.samples.petclinic.user.Authorities;
 import org.springframework.samples.petclinic.user.User;
 import org.springframework.samples.petclinic.user.UserService;
-import org.springframework.samples.petclinic.vet.Vet;
 import org.springframework.security.config.annotation.web.WebSecurityConfigurer;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -93,7 +92,6 @@ class VisitControllerTests {
 	private MockMvc mockMvc;
 
 	private Owner george;
-	private Vet vet;
 	private Pet simba;
 	private User user, logged;
 	private PetType lion;
@@ -159,17 +157,11 @@ class VisitControllerTests {
 		simba.setType(lion);
 		simba.setBirthDate(LocalDate.of(2000, 01, 01));
 
-		vet = new Vet();
-		vet.setId(1);
-		vet.setFirstName("Super");
-		vet.setLastName("Vet");
-
 		visit = new Visit();
 		visit.setId(TEST_VISIT_ID);
 		visit.setDatetime(LocalDateTime.of(2010, 1, 1, 12, 0));
 		visit.setDescription("Checking Simba's teeth.");
 		visit.setPet(simba);
-		visit.setVet(vet);
 
 		when(this.userService.findCurrentUser()).thenReturn(getUserFromDetails(
 				(UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()));
@@ -196,14 +188,12 @@ class VisitControllerTests {
 		stomach.setDatetime(LocalDateTime.of(2010, 1, 1, 12, 0));
 		stomach.setDescription("Checking Simba's stomach.");
 		stomach.setPet(simba);
-		stomach.setVet(vet);
 
 		Visit leg = new Visit();
 		leg.setId(3);
 		leg.setDatetime(LocalDateTime.of(2010, 1, 1, 12, 0));
 		leg.setDescription("Checking Simba's leg.");
 		leg.setPet(simba);
-		leg.setVet(vet);
 
 		when(this.petService.findPetById(TEST_PET_ID)).thenReturn(simba);
 		when(this.visitService.findVisitsByPetId(TEST_PET_ID)).thenReturn(List.of(visit, stomach, leg));
@@ -224,14 +214,12 @@ class VisitControllerTests {
 		stomach.setDatetime(LocalDateTime.of(2010, 1, 1, 12, 0));
 		stomach.setDescription("Checking Simba's stomach.");
 		stomach.setPet(simba);
-		stomach.setVet(vet);
 
 		Visit leg = new Visit();
 		leg.setId(3);
 		leg.setDatetime(LocalDateTime.of(2010, 1, 1, 12, 0));
 		leg.setDescription("Checking Simba's leg.");
 		leg.setPet(simba);
-		leg.setVet(vet);
 
 		when(this.petService.findPetById(TEST_PET_ID)).thenReturn(simba);
 		when(this.userService.findOwnerByUser(TEST_USER_ID)).thenReturn(george);
@@ -253,14 +241,12 @@ class VisitControllerTests {
 		stomach.setDatetime(LocalDateTime.of(2010, 1, 1, 12, 0));
 		stomach.setDescription("Checking Simba's stomach.");
 		stomach.setPet(simba);
-		stomach.setVet(vet);
 
 		Visit leg = new Visit();
 		leg.setId(3);
 		leg.setDatetime(LocalDateTime.of(2010, 1, 1, 12, 0));
 		leg.setDescription("Checking Simba's leg.");
 		leg.setPet(simba);
-		leg.setVet(vet);
 
 		Owner other = new Owner();
 		other.setId(2);
@@ -284,8 +270,7 @@ class VisitControllerTests {
 		mockMvc.perform(get(BASE_URL + "/{id}", TEST_VISIT_ID)).andExpect(status().isOk())
 				.andExpect(jsonPath("$.id").value(TEST_VISIT_ID))
 				.andExpect(jsonPath("$.description").value(visit.getDescription()))
-				.andExpect(jsonPath("$.pet.name").value(simba.getName()))
-				.andExpect(jsonPath("$.vet.firstName").value(vet.getFirstName()));
+				.andExpect(jsonPath("$.pet.name").value(simba.getName()));
 	}
 
 	@Test
@@ -299,8 +284,7 @@ class VisitControllerTests {
 		mockMvc.perform(get(BASE_URL + "/{id}", TEST_PET_ID)).andExpect(status().isOk())
 				.andExpect(jsonPath("$.id").value(TEST_PET_ID)).andExpect(jsonPath("$.id").value(TEST_VISIT_ID))
 				.andExpect(jsonPath("$.description").value(visit.getDescription()))
-				.andExpect(jsonPath("$.pet.name").value(simba.getName()))
-				.andExpect(jsonPath("$.vet.firstName").value(vet.getFirstName()));
+				.andExpect(jsonPath("$.pet.name").value(simba.getName()));
 	}
 
 	@Test
@@ -335,7 +319,6 @@ class VisitControllerTests {
 		Visit aux = new Visit();
 		aux.setDescription("Prueba");
 		aux.setDatetime(LocalDateTime.of(2010, 1, 1, 12, 0));
-		aux.setVet(vet);
 		aux.setPet(simba);
 
 		when(this.petService.findPetById(TEST_PET_ID)).thenReturn(simba);
@@ -351,7 +334,6 @@ class VisitControllerTests {
 		Visit aux = new Visit();
 		aux.setDescription("Prueba");
 		aux.setDatetime(LocalDateTime.of(2010, 1, 1, 12, 0));
-		aux.setVet(vet);
 		aux.setPet(null);
 
 		when(this.petService.findPetById(TEST_PET_ID)).thenReturn(simba);
@@ -367,7 +349,6 @@ class VisitControllerTests {
 		Visit aux = new Visit();
 		aux.setDescription("Prueba");
 		aux.setDatetime(null);
-		aux.setVet(vet);
 		aux.setPet(simba);
 
 		// null datetime
@@ -394,7 +375,6 @@ class VisitControllerTests {
 		Visit aux = new Visit();
 		aux.setDescription("Prueba");
 		aux.setDatetime(LocalDateTime.of(2010, 1, 1, 12, 0));
-		aux.setVet(vet);
 		aux.setPet(simba);
 
 		when(this.petService.findPetById(TEST_PET_ID)).thenReturn(simba);
@@ -412,7 +392,6 @@ class VisitControllerTests {
 		Visit aux = new Visit();
 		aux.setDescription("Prueba");
 		aux.setDatetime(LocalDateTime.of(2010, 1, 1, 12, 0));
-		aux.setVet(vet);
 		aux.setPet(simba);
 
 		Owner other = new Owner();
@@ -435,7 +414,6 @@ class VisitControllerTests {
 		Visit aux = new Visit();
 		aux.setDescription("Prueba");
 		aux.setDatetime(LocalDateTime.of(2010, 1, 1, 12, 0));
-		aux.setVet(vet);
 		aux.setPet(simba);
 
 		when(this.petService.findPetById(TEST_PET_ID)).thenReturn(simba);
@@ -550,7 +528,6 @@ class VisitControllerTests {
 		stomach.setDatetime(LocalDateTime.of(2010, 1, 1, 12, 0));
 		stomach.setDescription("Checking Simba's stomach.");
 		stomach.setPet(simba);
-		stomach.setVet(vet);
 
 		Pet other = new Pet();
 		other.setId(2);
@@ -561,7 +538,6 @@ class VisitControllerTests {
 		leg.setDatetime(LocalDateTime.of(2010, 1, 1, 12, 0));
 		leg.setDescription("Checking Simba's leg.");
 		leg.setPet(other);
-		leg.setVet(vet);
 
 		when(this.petService.findPetById(TEST_PET_ID)).thenReturn(simba);
 		when(this.visitService.findAll()).thenReturn(List.of(visit, stomach, leg));
@@ -581,7 +557,6 @@ class VisitControllerTests {
 		stomach.setDatetime(LocalDateTime.of(2010, 1, 1, 12, 0));
 		stomach.setDescription("Checking Simba's stomach.");
 		stomach.setPet(simba);
-		stomach.setVet(vet);
 
 		when(this.petService.findPetById(TEST_PET_ID)).thenReturn(simba);
 		when(this.userService.findOwnerByUser(TEST_USER_ID)).thenReturn(george);
@@ -602,13 +577,11 @@ class VisitControllerTests {
 		stomach.setDatetime(LocalDateTime.of(2010, 1, 1, 12, 0));
 		stomach.setDescription("Checking Simba's stomach.");
 		stomach.setPet(simba);
-		stomach.setVet(vet);
 
 		Visit leg = new Visit();
 		leg.setId(3);
 		leg.setDatetime(LocalDateTime.of(2010, 1, 1, 12, 0));
 		leg.setDescription("Checking Simba's leg.");
-		leg.setVet(vet);
 
 		when(this.ownerService.findOwnerById(TEST_OWNER_ID)).thenReturn(george);
 		when(this.petService.findPetById(TEST_PET_ID)).thenReturn(simba);
@@ -665,15 +638,6 @@ class VisitControllerTests {
 		when(this.visitService.getVisitsAdminStats()).thenReturn(new HashMap<>());
 
 		mockMvc.perform(get(VISITS_URL + "/stats")).andExpect(status().isOk());
-	}
-
-	@Test
-	@WithMockUser(username = "vet", authorities = "VET")
-	void shouldNotReturnVetStats() throws Exception {
-		logged.setId(TEST_USER_ID);
-
-		mockMvc.perform(get(VISITS_URL + "/stats")).andExpect(status().isForbidden())
-				.andExpect(result -> assertTrue(result.getResolvedException() instanceof AccessDeniedException));
 	}
 
 }

@@ -42,7 +42,7 @@ export default function OwnerDashboard() {
           petId: Number(visit.pet.id),
           start: start,
           end: end,
-          title: `Visit for ${visit.pet.name} with Vet ${visit.vet.firstName} ${visit.vet.lastName}`,
+          title: `Visit for ${visit.pet.name}`,
           description: visit.description,
         };
       });

@@ -140,24 +140,6 @@ a base class for objects needing these properties.&#xD;
               </packagedElement>
               <packagedElement xmi:type="uml:Class" xmi:id="_W26pIORXEe2tGYjis3CJEQ" name="BaseEntity"/>
             </packagedElement>
-            <packagedElement xmi:type="uml:Package" xmi:id="_WrI28ORXEe2tGYjis3CJEQ" name="vet">
-              <packagedElement xmi:type="uml:Class" xmi:id="_WspS0ORXEe2tGYjis3CJEQ" name="Specialty">
-                <generalization xmi:id="_W1nBkeRXEe2tGYjis3CJEQ" general="_Ws2uMuRXEe2tGYjis3CJEQ"/>
-              </packagedElement>
-              <packagedElement xmi:type="uml:Class" xmi:id="_WvGw8ORXEe2tGYjis3CJEQ" name="Vet">
-                <generalization xmi:id="_W3kwceRXEe2tGYjis3CJEQ" general="_WtMscORXEe2tGYjis3CJEQ"/>
-                <ownedAttribute xmi:id="_W4Qs8ORXEe2tGYjis3CJEQ" name="specialties" visibility="private" type="_WspS0ORXEe2tGYjis3CJEQ" isOrdered="true" association="_W51aQeRXEe2tGYjis3CJEQ">
-                  <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_KQVRMORZEe2tGYjis3CJEQ"/>
-                  <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_W4Qs8eRXEe2tGYjis3CJEQ" value="*"/>
-                </ownedAttribute>
-                <ownedAttribute xmi:id="_W4R7GeRXEe2tGYjis3CJEQ" name="user" visibility="private" type="_WuXxIORXEe2tGYjis3CJEQ" association="_W5650ORXEe2tGYjis3CJEQ"/>
-                <ownedAttribute xmi:id="_W4TJNeRXEe2tGYjis3CJEQ" name="city" visibility="private">
-                  <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
-                </ownedAttribute>
-                <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_W4mEIORXEe2tGYjis3CJEQ" name="removeSpecialty" specification="_W3kJYORXEe2tGYjis3CJEQ">
-                  <ownedParameter xmi:id="_W4mEIeRXEe2tGYjis3CJEQ" name="s" type="_WspS0ORXEe2tGYjis3CJEQ"/>
-                  <language>java</language>
-                  <body>specialties.remove(s);&#xD;
 	</body>
                 </ownedBehavior>
                 <ownedOperation xmi:id="_W3kJYORXEe2tGYjis3CJEQ" name="removeSpecialty" method="_W4mEIORXEe2tGYjis3CJEQ">
@@ -372,7 +354,6 @@ a base class for objects needing these properties.&#xD;
                   <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
                 </ownedAttribute>
                 <ownedAttribute xmi:id="_W4XaoORXEe2tGYjis3CJEQ" name="pet" visibility="private" type="_WtvfAORXEe2tGYjis3CJEQ" association="_W6L_keRXEe2tGYjis3CJEQ"/>
-                <ownedAttribute xmi:id="_W4YBsuRXEe2tGYjis3CJEQ" name="vet" visibility="private" type="_WvGw8ORXEe2tGYjis3CJEQ" association="_W6SGMeRXEe2tGYjis3CJEQ"/>
                 <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_W4mrMORXEe2tGYjis3CJEQ" name="Visit" specification="_Wva6AORXEe2tGYjis3CJEQ">
                   <ownedParameter xmi:id="_W4mrMeRXEe2tGYjis3CJEQ" type="_WvTlQORXEe2tGYjis3CJEQ" direction="return"/>
                   <language>java</language>
@@ -529,7 +510,6 @@ a base class for objects needing these properties.&#xD;
     <annotations xmi:id="_WvDGkeRXEe2tGYjis3CJEQ" name="Getter"/>
     <annotations xmi:id="_WvDGkuRXEe2tGYjis3CJEQ" name="Setter"/>
   </UMLLabProfile:Annotations>
-  <Persistency:Table xmi:id="_WvNeoORXEe2tGYjis3CJEQ" tableName="vets" base_Classifier="_WvGw8ORXEe2tGYjis3CJEQ"/>
   <Persistency:JPA1StyledElement xmi:id="_WvOFsORXEe2tGYjis3CJEQ" base_Element="_WvGw8ORXEe2tGYjis3CJEQ"/>
   <UMLLabProfile:Annotations xmi:id="_WvPT0ORXEe2tGYjis3CJEQ" base_Element="_WvGw8ORXEe2tGYjis3CJEQ">
     <annotations xmi:id="_WvPT0eRXEe2tGYjis3CJEQ" name="Getter"/>
@@ -798,15 +778,7 @@ a base class for objects needing these properties.&#xD;
       </annotationParameters>
     </annotations>
     <annotations xmi:id="_W4RUBeRXEe2tGYjis3CJEQ" name="JoinTable">
-      <annotationParameters xmi:id="_W4RUBuRXEe2tGYjis3CJEQ" name="name" skipArray="true">
-        <valueSpecifications xmi:type="uml:LiteralString" xmi:id="_W4sx0eRXEe2tGYjis3CJEQ" value="&quot;vet_specialties&quot;"/>
-      </annotationParameters>
       <annotationParameters xmi:id="_W4R7EORXEe2tGYjis3CJEQ" name="joinColumns" skipArray="true">
-        <annotations xmi:id="_W4R7EeRXEe2tGYjis3CJEQ" name="JoinColumn">
-          <annotationParameters xmi:id="_W4R7EuRXEe2tGYjis3CJEQ" name="name" skipArray="true">
-            <valueSpecifications xmi:type="uml:LiteralString" xmi:id="_W4sx0uRXEe2tGYjis3CJEQ" value="&quot;vet_id&quot;"/>
-          </annotationParameters>
-        </annotations>
       </annotationParameters>
       <annotationParameters xmi:id="_W4R7E-RXEe2tGYjis3CJEQ" name="inverseJoinColumns" skipArray="true">
         <annotations xmi:id="_W4R7FORXEe2tGYjis3CJEQ" name="JoinColumn">
@@ -816,12 +788,6 @@ a base class for objects needing these properties.&#xD;
         </annotations>
       </annotationParameters>
       <annotationParameters xmi:id="_W4R7FuRXEe2tGYjis3CJEQ" name="uniqueConstraints">
-        <annotations xmi:id="_W4R7F-RXEe2tGYjis3CJEQ" name="UniqueConstraint">
-          <annotationParameters xmi:id="_W4R7GORXEe2tGYjis3CJEQ" name="columnNames">
-            <valueSpecifications xmi:type="uml:LiteralString" xmi:id="_W4tY4eRXEe2tGYjis3CJEQ" value="&quot;vet_id&quot;"/>
-            <valueSpecifications xmi:type="uml:LiteralString" xmi:id="_W4tY4uRXEe2tGYjis3CJEQ" value="&quot;specialty_id&quot;"/>
-          </annotationParameters>
-        </annotations>
       </annotationParameters>
     </annotations>
   </UMLLabProfile:Annotations>
@@ -885,11 +851,6 @@ a base class for objects needing these properties.&#xD;
   <UMLLabProfile:LegacyStyledElement xmi:id="_W4YBs-RXEe2tGYjis3CJEQ" base_Element="_W4YBsuRXEe2tGYjis3CJEQ"/>
   <UMLLabProfile:Annotations xmi:id="_W4YBtORXEe2tGYjis3CJEQ" base_Element="_W4YBsuRXEe2tGYjis3CJEQ">
     <annotations xmi:id="_W4YBteRXEe2tGYjis3CJEQ" name="ManyToOne"/>
-    <annotations xmi:id="_W4YBtuRXEe2tGYjis3CJEQ" name="JoinColumn">
-      <annotationParameters xmi:id="_W4YowORXEe2tGYjis3CJEQ" name="name" skipArray="true">
-        <valueSpecifications xmi:type="uml:LiteralString" xmi:id="_W4t_9ORXEe2tGYjis3CJEQ" value="&quot;vet_id&quot;"/>
-      </annotationParameters>
-    </annotations>
   </UMLLabProfile:Annotations>
   <UMLLabProfile:Reference xmi:id="_W4_FsORXEe2tGYjis3CJEQ" base_Element="_W43w8ORXEe2tGYjis3CJEQ"/>
   <UMLLabProfile:Reference xmi:id="_W5DXIORXEe2tGYjis3CJEQ" base_Element="_W4_swORXEe2tGYjis3CJEQ"/>

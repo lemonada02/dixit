@@ -18,9 +18,6 @@ import org.springframework.samples.petclinic.user.Authorities;
 import org.springframework.samples.petclinic.user.AuthoritiesService;
 import org.springframework.samples.petclinic.user.User;
 import org.springframework.samples.petclinic.user.UserService;
-import org.springframework.samples.petclinic.vet.Specialty;
-import org.springframework.samples.petclinic.vet.Vet;
-import org.springframework.samples.petclinic.vet.VetService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -31,19 +28,17 @@ public class AuthService {
 	private final AuthoritiesService authoritiesService;
 	private final UserService userService;
 	private final OwnerService ownerService;
-	private final VetService vetService;
 	private final ClinicOwnerService clinicOwnerService;
 	private final ClinicService clinicService;
 	private final PlayerService playerService;
 
 	@Autowired
 	public AuthService(PasswordEncoder encoder, AuthoritiesService authoritiesService, UserService userService, PlayerService playerService,
-			OwnerService ownerService, VetService vetService, ClinicOwnerService clinicOwnerService, ClinicService clinicService) {
+			OwnerService ownerService, ClinicOwnerService clinicOwnerService, ClinicService clinicService) {
 		this.encoder = encoder;
 		this.authoritiesService = authoritiesService;
 		this.userService = userService;
 		this.ownerService = ownerService;
-		this.vetService = vetService;
 		this.clinicOwnerService = clinicOwnerService;
 		this.clinicService = clinicService;
 		this.playerService = playerService;
@@ -62,19 +57,6 @@ public class AuthService {
 			role = authoritiesService.findByAuthority("ADMIN");
 			user.setAuthority(role);
 			userService.saveUser(user);
-			break;
-		case "vet":
-			role = authoritiesService.findByAuthority("VET");
-			user.setAuthority(role);
-			userService.saveUser(user);
-			Vet vet = new Vet();
-			vet.setFirstName(request.getFirstName());
-			vet.setLastName(request.getLastName());
-			vet.setCity(request.getCity());
-			vet.setSpecialties(new ArrayList<Specialty>());
-			vet.setClinic(clinicService.findClinicById(request.getClinic().getId()));
-			vet.setUser(user);
-			vetService.saveVet(vet);
 			break;
 		case "clinic owner":
 			role = authoritiesService.findByAuthority("CLINIC_OWNER");

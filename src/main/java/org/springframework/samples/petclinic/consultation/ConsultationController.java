@@ -17,7 +17,6 @@ import org.springframework.samples.petclinic.exceptions.UpperPlanFeatureExceptio
 import org.springframework.samples.petclinic.owner.Owner;
 import org.springframework.samples.petclinic.user.User;
 import org.springframework.samples.petclinic.user.UserService;
-import org.springframework.samples.petclinic.vet.Vet;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -41,7 +40,6 @@ public class ConsultationController {
 	private final ConsultationService consultationService;
 	private final UserService userService;
 	private static final String OWNER_AUTH = "OWNER";
-	private static final String VET_AUTH = "VET";
 	private static final String ADMIN_AUTH = "ADMIN";
 	private static final String CLINIC_OWNER_AUTH = "CLINIC_OWNER";
 
@@ -66,9 +64,6 @@ public class ConsultationController {
 			res = (List<Consultation>) consultationService.findAll();
 		} else if (user.hasAnyAuthority(CLINIC_OWNER_AUTH).equals(true) && userId != null) {
 			res = (List<Consultation>) consultationService.findAllByClinicOwnerUserId(userId);
-		} else if (user.hasAnyAuthority(VET_AUTH).equals(true) && userId != null) {
-			Vet vet = userService.findVetByUser(userId);
-			res = consultationService.findAllByClinicId(vet.getClinic().getId());
 		} else {
 			if (userId == null) {
 				Owner owner = userService.findOwnerByUser(user.getId());
@@ -82,7 +77,7 @@ public class ConsultationController {
 	public ResponseEntity<Consultation> findConsultationById(@PathVariable("consultationId") int id) {
 		User user = userService.findCurrentUser();
 		Consultation cons = this.consultationService.findConsultationById(id);
-		if (user.hasAnyAuthority(ADMIN_AUTH, CLINIC_OWNER_AUTH, VET_AUTH).equals(true))
+		if (user.hasAnyAuthority(ADMIN_AUTH, CLINIC_OWNER_AUTH).equals(true))
 			return new ResponseEntity<>(cons, HttpStatus.OK);
 		else {
 			Owner owner = userService.findOwnerByUser(user.getId());

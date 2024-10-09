@@ -23,7 +23,6 @@ import org.springframework.samples.petclinic.owner.Owner;
 import org.springframework.samples.petclinic.owner.OwnerService;
 import org.springframework.samples.petclinic.pet.PetService;
 import org.springframework.samples.petclinic.util.EntityUtils;
-import org.springframework.samples.petclinic.vet.VetService;
 import org.springframework.transaction.annotation.Transactional;
 
 //@DataJpaTest(includeFilters = @ComponentScan.Filter(Service.class))
@@ -36,9 +35,6 @@ class ConsultationServiceTests {
 
 	@Autowired
 	protected OwnerService ownerService;
-
-	@Autowired
-	protected VetService vetService;
 
 	@Autowired
 	protected PetService petService;
@@ -306,7 +302,6 @@ class ConsultationServiceTests {
 		Ticket t = new Ticket();
 		t.setDescription("Consulta de prueba");
 		t.setConsultation(c);
-		t.setUser(this.vetService.findVetById(1).getUser());
 		this.consultationService.saveTicket(t);
 
 		UpperPlanFeatureException response = assertThrows(UpperPlanFeatureException.class,

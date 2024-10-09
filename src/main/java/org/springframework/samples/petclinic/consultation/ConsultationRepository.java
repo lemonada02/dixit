@@ -16,10 +16,6 @@ public interface ConsultationRepository extends CrudRepository<Consultation, Int
 //	public List<Consultation> findConsultationsByUser(@Param("userId") int userId);
 
 	public Iterable<Consultation> findAllByOrderByCreationDateDesc();
-
-//	@Query("SELECT c FROM Consultation c JOIN Vet v WHERE c.id = v.consul ORDER BY c.creationDate DESC")
-//	public List<Consultation> findConsultationsByVet(@Param("vetId") int vetId);
-
 	// STATS
 	// ADMIN
 	@Query("SELECT COUNT(c) FROM Consultation c")
