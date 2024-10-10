@@ -20,6 +20,7 @@ export default function CardListing() {
     const cardList = cards.map(card => {
         return (
             <div key={card.id} style={{margin: 15}}>
+                <h3>{card.id}</h3>
                 <img src={card.design} alt="Card Design" style={{ height: 250 }} />
             </div>
         );

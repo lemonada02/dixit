@@ -1,11 +1,9 @@
 package org.springframework.samples.petclinic.scoreboard;
 
-import org.springframework.samples.petclinic.game.Game;
 import org.springframework.samples.petclinic.model.BaseEntity;
 import org.springframework.samples.petclinic.user.User;
 
 import jakarta.persistence.Entity;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
@@ -28,7 +26,4 @@ public class Scoreboard extends BaseEntity{
 
     @OneToOne
     private User user;
-
-    @ManyToOne
-    private Game game;
 }

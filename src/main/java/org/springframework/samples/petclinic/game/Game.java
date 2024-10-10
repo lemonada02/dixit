@@ -9,7 +9,7 @@ import org.springframework.samples.petclinic.scoreboard.Scoreboard;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
-import jakarta.validation.constraints.Max;
+import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
@@ -17,16 +17,19 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
+@Table(name = "games")
 public class Game extends BaseEntity {
     
     @NotNull
-    @Max(4)
     private Integer numberOfPlayers;
 
     @NotNull
     private Integer numberOfRounds;
 
-    @OneToMany(mappedBy = "game")
+    @NotNull
+    private String creator;
+
+    @OneToMany
     private List<Scoreboard> scoreboards;
 
     @OneToMany

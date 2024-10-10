@@ -1,8 +1,6 @@
 package org.springframework.samples.petclinic.card;
 
 import java.util.List;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Arrays;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +17,12 @@ public class CardService {
     }
 
     public List<Card> findAllCards() {
-        return cardRepository.findAll();
+        if(!cardRepository.findAll().isEmpty()){
+            return cardRepository.findAll();
+        } else {
+            createAllCards();
+            return cardRepository.findAll();
+        }
     }
 
     public Card findCardById(int cardId) {
