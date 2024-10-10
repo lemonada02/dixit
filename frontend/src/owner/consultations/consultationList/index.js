@@ -26,37 +26,12 @@ export default function OwnerConsultationList() {
     setSearch("");
   }
 
-  function handleFilter(event) {
-    const value = event.target.value;
-    let filteredConsultations;
-
-    if (value === "") {
-      if (search !== "")
-        filteredConsultations = [...consultations].filter((i) =>
-          i.pet.name.toLowerCase().includes(search)
-        );
-      else filteredConsultations = [...consultations];
-    } else {
-      if (search !== "")
-        filteredConsultations = [...consultations].filter(
-          (i) => i.status === value && i.pet.name.toLowerCase().includes(search)
-        );
-      else
-        filteredConsultations = [...consultations].filter(
-          (i) => i.status === value
-        );
-    }
-    setFiltered(filteredConsultations);
-    setFilter(value);
-  }
-
   function getConsultationList(consultations, plan) {
     return consultations.map((c) => {
       return (
         <tr key={c.id}>
           <td>{c.title}</td>
           <td>{c.status}</td>
-          <td>{c.pet?.name}</td>
           <td>{c.isClinicComment ? "Clinic Owner" : "Clinic Vet"}</td>
           <td>{new Date(c.creationDate).toLocaleString()}</td>
           <td>
@@ -98,15 +73,6 @@ export default function OwnerConsultationList() {
           (i) => i.status === filter
         );
       else filteredConsultations = [...consultations];
-    } else {
-      if (filter !== "")
-        filteredConsultations = [...consultations].filter(
-          (i) => i.status === filter && i.pet.name.toLowerCase().includes(value)
-        );
-      else
-        filteredConsultations = [...consultations].filter((i) =>
-          i.pet.name.toLowerCase().includes(value)
-        );
     }
 
     setFiltered(filteredConsultations);
@@ -156,26 +122,6 @@ export default function OwnerConsultationList() {
             ) : (
               <></>
             )}
-            <Button color="link" onClick={handleFilter} value="PENDING">
-              Pending
-            </Button>
-            <Button color="link" onClick={handleFilter} value="ANSWERED">
-              Answered
-            </Button>
-            <Button color="link" onClick={handleFilter} value="CLOSED">
-              Closed
-            </Button>
-            <Button color="link" onClick={handleFilter} value="">
-              All
-            </Button>
-          </Col>
-          <Col className="col-sm-3">
-            <Input
-              type="search"
-              placeholder="Introduce a pet name to search by it"
-              value={search || ""}
-              onChange={handleChange}
-            />
           </Col>
           <Col className="col-sm-3">
             <Button color="link" onClick={handleClear}>
@@ -188,7 +134,6 @@ export default function OwnerConsultationList() {
             <tr>
               <th>Title</th>
               <th>Status</th>
-              <th>Pet</th>
               <th>Sent To</th>
               <th>Creation Date</th>
               <th>Actions</th>

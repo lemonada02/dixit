@@ -8,17 +8,13 @@ import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.samples.petclinic.model.BaseEntity;
 import org.springframework.samples.petclinic.owner.Owner;
-import org.springframework.samples.petclinic.pet.Pet;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -45,10 +41,6 @@ public class Consultation extends BaseEntity {
 	@JoinColumn(name = "owner_id")	
 	@NotNull
 	private Owner owner;
-
-	@ManyToOne
-	@JoinColumn(name = "pet_id")	
-	private Pet pet;
 
 	@Column(name = "creation_date")
 	@CreationTimestamp

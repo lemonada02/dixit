@@ -217,9 +217,6 @@ export default function OwnerConsultationTickets() {
 
   return (
     <div className="ticket-page">
-      <h2 className="text-center">
-        Consultation Number {consultation.id} - Pet {consultation.pet?.name}
-      </h2>
       <h3>{consultation.title}</h3>
       <div className="conversation-container" ref={conversationRef}>
         {getTicketList(tickets, plan)}

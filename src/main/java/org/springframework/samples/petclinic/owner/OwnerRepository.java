@@ -16,15 +16,12 @@
 package org.springframework.samples.petclinic.owner;
 
 import java.util.Collection;
-import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.samples.petclinic.clinic.PricingPlan;
-import org.springframework.samples.petclinic.pet.Pet;
 
 /**
  * Spring Data JPA OwnerRepository interface
@@ -45,9 +42,6 @@ public interface OwnerRepository extends CrudRepository<Owner, Integer> {
 	@Query("SELECT DISTINCT owner FROM Owner owner WHERE owner.lastName LIKE :lastName%")
 	public Collection<Owner> findByLastName(@Param("lastName") String lastName);
 
-	@Query("SELECT p FROM Pet p WHERE p.owner.id = :ownerId")
-	public List<Pet> findPetsByOwner(@Param("ownerId") int ownerId);
-
 	@Query("SELECT DISTINCT owner FROM Owner owner WHERE owner.user.id = :userId")
 	public Optional<Owner> findByUser(int userId);
 
@@ -58,8 +52,5 @@ public interface OwnerRepository extends CrudRepository<Owner, Integer> {
 
 	@Query("SELECT COUNT(o) FROM Owner o")
 	public Integer countAll();
-
-	@Query("SELECT NEW MAP(v.pet.owner.id as userId, cast(COUNT(v) as integer) as visits) FROM  Visit v GROUP BY v.pet.owner")
-	public List<Map<String, Integer>> getOwnersWithMostVisits();
 
 }

@@ -34,9 +34,6 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.DataAccessException;
 import org.springframework.samples.petclinic.exceptions.ResourceNotFoundException;
-import org.springframework.samples.petclinic.pet.Pet;
-import org.springframework.samples.petclinic.pet.PetService;
-import org.springframework.samples.petclinic.pet.exceptions.DuplicatedPetNameException;
 import org.springframework.samples.petclinic.user.AuthoritiesService;
 import org.springframework.samples.petclinic.user.User;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -49,14 +46,12 @@ import org.springframework.transaction.annotation.Transactional;
 public class OwnerServiceTests {
 
 	private OwnerService ownerService;
-	private PetService petService;
 	private AuthoritiesService authService;
 	
 
 	@Autowired
-	public OwnerServiceTests(OwnerService ownerService, PetService petService, AuthoritiesService authService) {
+	public OwnerServiceTests(OwnerService ownerService, AuthoritiesService authService) {
 		this.ownerService = ownerService;
-		this.petService = petService;
 		this.authService = authService;
 	}
 
@@ -73,16 +68,6 @@ public class OwnerServiceTests {
 
 		owners = this.ownerService.findOwnerByLastName("Daviss");
 		assertThat(owners.isEmpty()).isTrue();
-	}
-
-	@Test
-	void shouldFindSingleOwnerWithPet() {
-		Owner owner = this.ownerService.findOwnerById(1);
-		List<Pet> pets = petService.findAllPetsByOwnerId(owner.getId());
-		assertThat(owner.getLastName()).startsWith("Franklin");
-		assertEquals(1, pets.size());
-		assertNotNull(pets.get(0).getType());
-		assertEquals("cat", pets.get(0).getType().getName());
 	}
 
 	@Test
@@ -138,15 +123,10 @@ public class OwnerServiceTests {
 
 	@Test
 	@Transactional
-	void shouldDeleteOwner() throws DataAccessException, DuplicatedPetNameException {
+	void shouldDeleteOwner() throws DataAccessException{
 		Integer firstCount = ((Collection<Owner>) ownerService.findAll()).size();
 
 		Owner owner = createOwnerUser();
-		Pet pet = new Pet();
-		pet.setName("Sisi");
-		pet.setType(petService.findPetTypeByName("dog"));
-		pet.setOwner(owner);
-		petService.savePet(pet);
 
 		Integer secondCount = ((Collection<Owner>) ownerService.findAll()).size();
 		assertEquals(firstCount + 1, secondCount);

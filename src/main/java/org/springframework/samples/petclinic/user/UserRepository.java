@@ -13,9 +13,6 @@ public interface UserRepository extends  CrudRepository<User, Integer>{
 //	@Query("DELETE FROM Owner o WHERE o.user.username = :username")
 //	void deleteOwnerOfUser(String username);
 //	
-//	@Modifying
-//	@Query("DELETE FROM Pet p WHERE p.owner.id = :id")
-//	public void deletePetsOfOwner(@Param("id") int id);
 	
 	@Query("SELECT o FROM Owner o WHERE o.user.username = :username")
 	Optional<Owner> findOwnerByUser(String username);

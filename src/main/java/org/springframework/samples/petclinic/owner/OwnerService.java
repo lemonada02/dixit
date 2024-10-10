@@ -29,7 +29,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.samples.petclinic.clinic.PricingPlan;
 import org.springframework.samples.petclinic.exceptions.ResourceNotFoundException;
-import org.springframework.samples.petclinic.pet.PetService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -37,12 +36,10 @@ import org.springframework.transaction.annotation.Transactional;
 public class OwnerService {
 
 	private OwnerRepository ownerRepository;
-	private PetService petService;
 
 	@Autowired
-	public OwnerService(OwnerRepository ownerRepository, PetService petService) {
+	public OwnerService(OwnerRepository ownerRepository) {
 		this.ownerRepository = ownerRepository;
-		this.petService = petService;
 	}
 
 	@Transactional(readOnly = true)
@@ -91,40 +88,14 @@ public class OwnerService {
 		Integer goldOwners = this.ownerRepository.countByPlan(PricingPlan.GOLD);
 		Integer platinumOwners = this.ownerRepository.countByPlan(PricingPlan.PLATINUM);
 		Integer totalOwners = this.ownerRepository.countAll();
-		Integer moreThanOnePet = getOwnersWithMoreThanOnePet();
-		Map<String, Integer> ownersVisits = getOwnersVisits();
 
 		res.put("basicOwners", basicOwners);
 		res.put("goldOwners", goldOwners);
 		res.put("platinumOwners", platinumOwners);
 		res.put("totalOwners", totalOwners);
-		res.put("ownersVisits", ownersVisits);
-		res.put("moreThanOnePet", moreThanOnePet);
 
 		return res;
 
-	}
-
-	private Integer getOwnersWithMoreThanOnePet() {
-		Integer res = 0;
-		List<Owner> owners = (List<Owner>) findAll();
-		for (Owner o : owners) {
-			if (this.ownerRepository.findPetsByOwner(o.getId()).size() > 1)
-				res++;
-		}
-		return res;
-	}
-
-	private Map<String, Integer> getOwnersVisits() {
-		Map<String, Integer> unsortedOwnersVisits = new HashMap<>();
-		this.ownerRepository.getOwnersWithMostVisits().forEach(m -> {
-			String key = findOwnerById(m.get("userId")).getUser().getUsername();
-			Integer value = m.get("visits");
-			unsortedOwnersVisits.put(key, value);
-		});
-		return unsortedOwnersVisits.entrySet().stream().sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
-				.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (oldValue, newValue) -> oldValue,
-						LinkedHashMap::new));
 	}
 
 }

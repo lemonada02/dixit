@@ -31,8 +31,6 @@ export default function ConsultationEditAdmin() {
     id
   );
   const owners = useFetchData("/api/v1/owners", jwt);
-  const pets = useFetchData(`/api/v1/pets`, jwt);
-  const [petsOwned, setPetsOwned] = useState([]);
 
   function handleChange(event) {
     const target = event.target;
@@ -41,10 +39,6 @@ export default function ConsultationEditAdmin() {
     if (name === "owner") {
       const owner = owners.find((owner) => owner.id === Number(value));
       setConsultation({ ...consultation, owner: owner });
-      setPetsOwned(pets.filter((pet) => pet.owner.id === Number(value)));
-    } else if (name === "pet") {
-      const pet = pets.find((pet) => pet.id === Number(value));
-      setConsultation({ ...consultation, pet: pet });
     } else if (name === "isClinicComment"){
       setConsultation({...consultation, isClinicComment: target.checked ? true : false});
     } else {
@@ -83,23 +77,6 @@ export default function ConsultationEditAdmin() {
       {owner.user.username}
     </option>
   ));
-  let petOptions;
-  if (consultation.id)
-    petOptions = (
-      <option key={consultation.pet.id} value={consultation.pet.id}>
-        {consultation.pet.name}
-      </option>
-    );
-  else
-    petOptions = consultation.owner ? (
-      petsOwned.map((pet) => (
-        <option key={pet.id} value={pet.id}>
-          {pet.name}
-        </option>
-      ))
-    ) : (
-      <></>
-    );
 
   return (
     <div className="auth-page-container">
@@ -169,38 +146,6 @@ export default function ConsultationEditAdmin() {
               >
                 <option value="">None</option>
                 {ownerOptions}
-              </Input>
-            )}
-          </div>
-          <div className="custom-form-input">
-            <Label for="pet" className="custom-form-input-label">
-              Pet
-            </Label>
-            {consultation.id ? (
-              <Input
-                type="select"
-                disabled
-                name="pet"
-                id="pet"
-                value={consultation.pet?.id || ""}
-                onChange={handleChange}
-                className="custom-input"
-              >
-                <option value="">None</option>
-                {petOptions}
-              </Input>
-            ) : (
-              <Input
-                type="select"
-                required
-                name="pet"
-                id="pet"
-                value={consultation.pet?.id || ""}
-                onChange={handleChange}
-                className="custom-input"
-              >
-                <option value="">None</option>
-                {petOptions}
               </Input>
             )}
           </div>

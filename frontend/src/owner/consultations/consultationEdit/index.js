@@ -16,7 +16,6 @@ export default function OwnerConsultationEdit() {
     isClinicComment: false,
   });
 
-  let [pets, setPets] = useState([]);
   let [owner, setOwner] = useState({});
   let [message, setMessage] = useState(null);
 
@@ -32,9 +31,7 @@ export default function OwnerConsultationEdit() {
     const value = target.value;
     const name = target.name;
     let consultationAux = { ...consultation };
-    if (name === "pet")
-      consultationAux.pet = pets.filter((pet) => pet.id === Number(value))[0];
-    else if (name === "isClinicComment")
+    if (name === "isClinicComment")
       consultationAux[name] = target.checked ? true : false;
     else consultationAux[name] = value;
 
@@ -80,34 +77,7 @@ export default function OwnerConsultationEdit() {
       if (consultation.message) setMessage(consultation.message);
       else setConsultation(consultation);
     }
-    if (!message) {
-      const pets = await (
-        await fetch(`/api/v1/pets?userId=${userId}`, {
-          headers: {
-            Authorization: `Bearer ${jwt}`,
-          },
-        })
-      ).json();
-      if (pets.message) setMessage(pets.message);
-      else {
-        setPets(pets);
-        setOwner(pets[0].owner);
-      }
-    }
   }
-
-  useEffect(() => {
-    setUp(); 
-  }, []);
-
-  useEffect(() => {
-    if (id !== "new"){
-        consultationEditFormInputs[0].defaultValue = consultation.title;
-        consultationEditFormRef.current.updateForm();
-    } else{
-        consultationEditFormInputs[0].defaultValue = "";
-    }
-  }, [consultation]);
 
   if (message) return <h2 className="text-center">{message}</h2>;
 
@@ -125,23 +95,6 @@ export default function OwnerConsultationEdit() {
           buttonText="Save"
           buttonClassName="auth-button"
         >
-          <Input
-            type="select"
-            disabled={consultation.id !== null}
-            required={consultation.id === null}
-            name="pet"
-            id="pet"
-            value={consultation.pet?.id || ""}
-            onChange={handleChange}
-          >
-            <option value="">None</option>
-            {pets &&
-              pets.map((pet) => (
-                <option key={pet.id} value={pet.id}>
-                  {pet.name}
-                </option>
-              ))}
-          </Input>
           <div className="consultation-checkbox-container">
             <label htmlFor="isClinicComment">
               ¿Is the consultation a comment for the clinic?

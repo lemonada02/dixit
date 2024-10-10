@@ -35,8 +35,6 @@ import org.springframework.samples.petclinic.exceptions.ResourceNotFoundExceptio
 import org.springframework.samples.petclinic.exceptions.ResourceNotOwnedException;
 import org.springframework.samples.petclinic.exceptions.UpperPlanFeatureException;
 import org.springframework.samples.petclinic.owner.Owner;
-import org.springframework.samples.petclinic.pet.Pet;
-import org.springframework.samples.petclinic.pet.PetType;
 import org.springframework.samples.petclinic.user.Authorities;
 import org.springframework.samples.petclinic.user.User;
 import org.springframework.samples.petclinic.user.UserService;
@@ -84,7 +82,6 @@ class ConsultationControllerTests {
 	private MockMvc mockMvc;
 
 	private Owner george;
-	private Pet simba;
 	private User user;
 	private User logged;
 	private Consultation consultation;
@@ -138,22 +135,11 @@ class ConsultationControllerTests {
 
 		george.setUser(user);
 
-		PetType lion = new PetType();
-		lion.setId(1);
-		lion.setName("lion");
-
-		simba = new Pet();
-		simba.setId(1);
-		simba.setName("Simba");
-		simba.setOwner(george);
-		simba.setType(lion);
-		simba.setBirthDate(LocalDate.of(2000, 01, 01));
 
 		consultation = new Consultation();
 		consultation.setId(TEST_CONSULTATION_ID);
 		consultation.setCreationDate(LocalDateTime.of(2010, 1, 1, 12, 0));
 		consultation.setTitle("Checking Simba's teeth.");
-		consultation.setPet(simba);
 		consultation.setOwner(george);
 		consultation.setStatus(ConsultationStatus.PENDING);
 		consultation.setIsClinicComment(false);
@@ -188,7 +174,6 @@ class ConsultationControllerTests {
 		stomach.setId(2);
 		stomach.setCreationDate(LocalDateTime.of(2010, 1, 1, 12, 0));
 		stomach.setTitle("Checking Simba's stomach.");
-		stomach.setPet(simba);
 		stomach.setOwner(george);
 		stomach.setStatus(ConsultationStatus.PENDING);
 
@@ -196,7 +181,6 @@ class ConsultationControllerTests {
 		leg.setId(3);
 		leg.setCreationDate(LocalDateTime.of(2010, 1, 1, 12, 0));
 		leg.setTitle("Checking Simba's leg.");
-		leg.setPet(simba);
 		leg.setOwner(george);
 		leg.setStatus(ConsultationStatus.PENDING);
 
@@ -216,7 +200,6 @@ class ConsultationControllerTests {
 		stomach.setId(2);
 		stomach.setCreationDate(LocalDateTime.of(2010, 1, 1, 12, 0));
 		stomach.setTitle("Checking Simba's stomach.");
-		stomach.setPet(simba);
 		stomach.setOwner(george);
 		stomach.setStatus(ConsultationStatus.PENDING);
 
@@ -224,7 +207,6 @@ class ConsultationControllerTests {
 		leg.setId(3);
 		leg.setCreationDate(LocalDateTime.of(2010, 1, 1, 12, 0));
 		leg.setTitle("Checking Simba's leg.");
-		leg.setPet(simba);
 		leg.setOwner(george);
 		leg.setStatus(ConsultationStatus.PENDING);
 
@@ -249,7 +231,6 @@ class ConsultationControllerTests {
 				.andExpect(jsonPath("$.id").value(TEST_CONSULTATION_ID))
 				.andExpect(jsonPath("$.title").value(consultation.getTitle()))
 				.andExpect(jsonPath("$.status").value(consultation.getStatus().toString()))
-				.andExpect(jsonPath("$.pet.name").value(simba.getName()))
 				.andExpect(jsonPath("$.owner.firstName").value(george.getFirstName()));
 	}
 
@@ -265,7 +246,6 @@ class ConsultationControllerTests {
 				.andExpect(jsonPath("$.id").value(TEST_CONSULTATION_ID))
 				.andExpect(jsonPath("$.title").value(consultation.getTitle()))
 				.andExpect(jsonPath("$.status").value(consultation.getStatus().toString()))
-				.andExpect(jsonPath("$.pet.name").value(simba.getName()))
 				.andExpect(jsonPath("$.owner.firstName").value(george.getFirstName()));
 	}
 
@@ -300,31 +280,11 @@ class ConsultationControllerTests {
 		Consultation aux = new Consultation();
 		aux.setId(3);
 		aux.setTitle("Checking Simba's leg.");
-		aux.setPet(simba);
 		aux.setOwner(george);
 		aux.setStatus(ConsultationStatus.PENDING);
 
 		mockMvc.perform(post(BASE_URL).with(csrf()).contentType(MediaType.APPLICATION_JSON)
 				.content(objectMapper.writeValueAsString(aux))).andExpect(status().isCreated());
-	}
-
-	@Test
-	@WithMockUser(username = "admin", authorities = "ADMIN")
-	void shouldNotCreateInvalidConsultationPetNotOfOwner() throws Exception {
-		logged.setId(TEST_USER_ID);
-		Owner owner = new Owner();
-		owner.setId(2);
-
-		Consultation aux = new Consultation();
-		aux.setId(2);
-		aux.setTitle("Checking Simba's leg.");
-		aux.setPet(simba);
-		aux.setOwner(owner);
-		aux.setStatus(ConsultationStatus.PENDING);
-
-		mockMvc.perform(post(BASE_URL).with(csrf()).contentType(MediaType.APPLICATION_JSON)
-				.content(objectMapper.writeValueAsString(aux))).andExpect(status().isBadRequest()).andExpect(
-						result -> assertTrue(result.getResolvedException() instanceof MethodArgumentNotValidException));
 	}
 
 	@Test
@@ -335,7 +295,7 @@ class ConsultationControllerTests {
 		Consultation aux = new Consultation();
 		aux.setId(2);
 		aux.setTitle("Checking Simba's leg.");
-		aux.setPet(simba);
+
 		aux.setOwner(george);
 
 		when(this.userService.findOwnerByUser(TEST_USER_ID)).thenReturn(george);
@@ -351,7 +311,6 @@ class ConsultationControllerTests {
 		Consultation aux = new Consultation();
 		aux.setId(2);
 		aux.setTitle("Checking Simba's leg.");
-		aux.setPet(simba);
 		aux.setOwner(george);
 
 		when(this.userService.findOwnerByUser(TEST_USER_ID)).thenReturn(george);
@@ -375,8 +334,7 @@ class ConsultationControllerTests {
 
 		mockMvc.perform(put(BASE_URL + "/{id}", TEST_USER_ID).with(csrf()).contentType(MediaType.APPLICATION_JSON)
 				.content(objectMapper.writeValueAsString(consultation))).andExpect(status().isOk())
-				.andExpect(jsonPath("$.title").value(consultation.getTitle()))
-				.andExpect(jsonPath("$.pet.name").value(consultation.getPet().getName()));
+				.andExpect(jsonPath("$.title").value(consultation.getTitle()));
 	}
 
 	@Test
@@ -392,8 +350,7 @@ class ConsultationControllerTests {
 
 		mockMvc.perform(put(BASE_URL + "/{id}", TEST_USER_ID).with(csrf()).contentType(MediaType.APPLICATION_JSON)
 				.content(objectMapper.writeValueAsString(consultation))).andExpect(status().isOk())
-				.andExpect(jsonPath("$.title").value(consultation.getTitle()))
-				.andExpect(jsonPath("$.pet.name").value(consultation.getPet().getName()));
+				.andExpect(jsonPath("$.title").value(consultation.getTitle()));
 	}
 
 	@Test

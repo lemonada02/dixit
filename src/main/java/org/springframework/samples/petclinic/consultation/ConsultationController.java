@@ -48,12 +48,7 @@ public class ConsultationController {
 		this.consultationService = consultationService;
 		this.userService = userService;
 	}
-
-	@InitBinder("consultation")
-	public void initConsultationBinder(WebDataBinder dataBinder) {
-		dataBinder.setValidator(new ConsultationValidator());
-	}
-
+	
 	@GetMapping
 	public ResponseEntity<List<Consultation>> findAllConsultations(@RequestParam(required = false) Integer userId) {
 

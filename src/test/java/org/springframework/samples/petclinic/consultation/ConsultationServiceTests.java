@@ -21,7 +21,6 @@ import org.springframework.samples.petclinic.exceptions.ResourceNotFoundExceptio
 import org.springframework.samples.petclinic.exceptions.UpperPlanFeatureException;
 import org.springframework.samples.petclinic.owner.Owner;
 import org.springframework.samples.petclinic.owner.OwnerService;
-import org.springframework.samples.petclinic.pet.PetService;
 import org.springframework.samples.petclinic.util.EntityUtils;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -35,9 +34,6 @@ class ConsultationServiceTests {
 
 	@Autowired
 	protected OwnerService ownerService;
-
-	@Autowired
-	protected PetService petService;
 
 	@Test
 	void shouldFindAllConsultations() {
@@ -80,7 +76,6 @@ class ConsultationServiceTests {
 		cons.setTitle("Consulta de prueba");
 		cons.setStatus(ConsultationStatus.PENDING);
 		cons.setOwner(this.ownerService.findOwnerById(2));
-		cons.setPet(this.petService.findPetById(2));
 
 		this.consultationService.saveConsultation(cons);
 		Assertions.assertThat(cons.getId().longValue()).isNotZero();
@@ -110,7 +105,6 @@ class ConsultationServiceTests {
 		cons.setTitle("Consulta de prueba");
 		cons.setStatus(ConsultationStatus.PENDING);
 		cons.setOwner(this.ownerService.findOwnerById(2));
-		cons.setPet(this.petService.findPetById(2));
 		this.consultationService.saveConsultation(cons);
 
 		Ticket ticket = new Ticket();
@@ -374,20 +368,6 @@ class ConsultationServiceTests {
 				.getOwnerConsultationsStats(ownerService.findOwnerById(9).getId());
 		assertTrue(stats.containsKey("totalConsultations"));
 		assertEquals(0, stats.get("totalConsultations"));
-	}
-
-	@SuppressWarnings("unchecked")
-	@Test
-	@Transactional
-	void shouldReturnStatsForOwnerWithMultiplePets() {
-		Map<String, Object> stats = this.consultationService
-				.getOwnerConsultationsStats(ownerService.findOwnerById(10).getId());
-		assertTrue(stats.containsKey("totalConsultations"));
-		assertEquals(1, stats.get("totalConsultations"));
-		assertTrue(stats.containsKey("consultationsByPet"));
-		assertEquals(1, ((Map<String, Integer>) stats.get("consultationsByPet")).get("Lucky"));
-		assertTrue(stats.containsKey("avgConsultationsByPet"));
-		assertNotEquals(0, stats.get("avgConsultationsByPet"));
 	}
 
 }
