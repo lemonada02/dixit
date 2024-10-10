@@ -33,12 +33,6 @@ class AuthoritiesServiceTests {
 	}
 
 	@Test
-	void shouldFindAuthoritiesByAuthority() {
-		Authorities auth = this.authService.findByAuthority("VET");
-		assertEquals("VET", auth.getAuthority());
-	}
-
-	@Test
 	void shouldNotFindAuthoritiesByIncorrectAuthority() {
 		assertThrows(ResourceNotFoundException.class, () -> this.authService.findByAuthority("authnotexists"));
 	}

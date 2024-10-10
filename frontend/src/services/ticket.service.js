@@ -7,8 +7,6 @@ class TicketService {
     getTicketList([tickets, setTickets], auth, [alerts, setAlerts], setMessage, setVisible, plan = null) {
         return tickets.map((t, index) => {
             const status = t.consultation.status;
-            const removeOwnerVet = () => deleteFromList(`/api/v1/consultations/${t.consultation.id}/tickets/${t.id}`, t.id, [tickets, setTickets],
-                [alerts, setAlerts], setMessage, setVisible, { date: t.creationDate });
             const removeAdmin = () => deleteFromList(`/api/v1/consultations/${t.consultation.id}/tickets/${t.id}`, t.id, [tickets, setTickets],
                 [alerts, setAlerts], setMessage, setVisible, { date: t.creationDate });
             const length = tickets.length;
@@ -19,21 +17,6 @@ class TicketService {
                         <Button aria-label={"edit-" + t.id} size="sm" color="primary" tag={Link}
                             to={`consultations/${t.consultation.id}/tickets/${t.id}`}>
                             Edit
-                        </Button>
-                        <Button aria-label={"delete-" + t.id} size="sm" color="danger" onClick={removeOwnerVet}>
-                            Delete
-                        </Button>
-                    </ButtonGroup> :
-                    <></>;
-            } else if (auth === "VET") {
-                buttons = index === length - 1 && t.user.authority.authority === "VET" && status !== "CLOSED" ?
-                    <ButtonGroup>
-                        <Button aria-label={"edit-" + t.id} size="sm" color="primary" tag={Link}
-                            to={`consultations/${t.consultation.id}/tickets/${t.id}`}>
-                            Edit
-                        </Button>
-                        <Button aria-label={"delete-" + t.id} size="sm" color="danger" onClick={removeOwnerVet}>
-                            Delete
                         </Button>
                     </ButtonGroup> :
                     <></>;

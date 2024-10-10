@@ -68,7 +68,7 @@ public class ConsultationService {
 	@Transactional
 	public Consultation updateConsultation(Consultation consultation, int id) throws DataAccessException {
 		Consultation toUpdate = findConsultationById(id);
-		BeanUtils.copyProperties(consultation, toUpdate, "id", "creationDate", "owner", "pet");
+		BeanUtils.copyProperties(consultation, toUpdate, "id", "creationDate", "owner");
 		return saveConsultation(toUpdate);
 	}
 
@@ -167,17 +167,9 @@ public class ConsultationService {
 	public Map<String, Object> getOwnerConsultationsStats(int ownerId) {
 		Map<String, Object> res = new HashMap<>();
 		Integer countAll = this.consultationRepository.countAllByOwner(ownerId);
-		int pets = this.consultationRepository.countAllPetsOfOwner(ownerId);
 		if (countAll > 0) {
 			Map<String, Integer> consultationsByYear = getConsultationsByYear(ownerId);
 			res.put("consultationsByYear", consultationsByYear);
-
-			if (pets > 1) {
-				Map<String, Integer> consultationsByPet = getConsultationsByPet(ownerId);
-				Double avgConsultationsByPet = (double) countAll / pets;
-				res.put("consultationsByPet", consultationsByPet);
-				res.put("avgConsultationsByPet", avgConsultationsByPet);
-			}
 
 			int years = LocalDate.now().getYear() - this.consultationRepository.getYearOfFirstConsultation(ownerId);
 			if (years >= 1) {
@@ -219,14 +211,5 @@ public class ConsultationService {
 						Map.Entry::getValue, (oldValue, newValue) -> oldValue, LinkedHashMap::new));
 	}
 
-	private Map<String, Integer> getConsultationsByPet(int userId) {
-		Map<String, Integer> unsortedConsultationsByPet = new HashMap<>();
-		this.consultationRepository.countConsultationsGroupedByPet(userId).forEach(m -> {
-			String key = m.get("pet");
-			Integer value = Integer.parseInt(m.get("consultations"));
-			unsortedConsultationsByPet.put(key, value);
-		});
-		return unsortedConsultationsByPet;
-	}
 }
 

@@ -3,7 +3,6 @@ import "../../static/css/auth/authPage.css";
 import tokenService from "../../services/token.service";
 import FormGenerator from "../../components/formGenerator/formGenerator";
 import { registerFormOwnerInputs } from "./form/registerFormOwnerInputs";
-import { registerFormVetInputs } from "./form/registerFormVetInputs";
 import { registerFormClinicOwnerInputs } from "./form/registerFormClinicOwnerInputs";
 import { useEffect, useRef, useState } from "react";
 import { registerFormPlayerInputs } from "./form/registerFormPlayer";
@@ -78,7 +77,7 @@ export default function Register() {
   }
 
   useEffect(() => {
-    if (type === "Owner" || type === "Vet") {
+    if (type === "Owner") {
       if (registerFormOwnerInputs[5].values.length === 1) {
         fetch("/api/v1/clinics")
           .then(function (response) {
@@ -114,7 +113,6 @@ export default function Register() {
             ref={registerFormRef}
             inputs={
               type === "Owner" ? registerFormOwnerInputs
-              : type === "Vet" ? registerFormVetInputs
               : type === "Clinic Owner" ? registerFormClinicOwnerInputs
               : registerFormPlayerInputs
             }
@@ -142,13 +140,6 @@ export default function Register() {
               onClick={handleButtonClick}
             >
               Owner
-            </button>
-            <button
-              className="auth-button"
-              value="Vet"
-              onClick={handleButtonClick}
-            >
-              Vet
             </button>
             <button
               className="auth-button"

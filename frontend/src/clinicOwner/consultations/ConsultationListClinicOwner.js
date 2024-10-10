@@ -99,7 +99,6 @@ export default function ConsultationListClinicOwner() {
                             <th>Title</th>
                             <th>Status</th>
                             <th>Owner</th>
-                            <th>Pet</th>
                             <th>Clinic</th>
                             <th>Sent To</th>
                             <th>Creation Date</th>

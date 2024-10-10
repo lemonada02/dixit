@@ -75,9 +75,9 @@ public class CardService {
         );
 
         for (int i = 0; i < nombres.size(); i++) {
-            Card carta = new Card();
-            carta.setDesign(nombres.get(i));
-            saveCard(carta);
+            Card card = new Card();
+            card.setDesign(nombres.get(i));
+            cardRepository.save(card);
         }
     }
 }
