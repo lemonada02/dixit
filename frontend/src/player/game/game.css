@@ -1,0 +1,25 @@
+.game-table {
+    justify-content: center;
+    margin: 25px;
+    background-color: #ffffff99;
+    border-radius: 25px;
+    color: #2f324f;
+}
+
+.game-table th, .game-table td {
+    padding: 15px;
+    font-size: 22px;
+}
+
+.game-table thead {
+
+    border-bottom: 2px solid #2f324f;
+}
+
+.game-row {
+    padding: 15px;
+}
+
+h2 {
+    text-shadow: #eee 2px 2px;
+}

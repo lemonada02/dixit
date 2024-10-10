@@ -18,7 +18,7 @@ import lombok.Setter;
 public class Scoreboard extends BaseEntity{
 
     @NotNull
-    private Integer order;
+    private Integer orden;
 
     @NotNull
     @PositiveOrZero

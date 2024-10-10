@@ -10,6 +10,7 @@ import org.springframework.samples.petclinic.round.Round;
 import org.springframework.samples.petclinic.round.RoundService;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class GameService {
